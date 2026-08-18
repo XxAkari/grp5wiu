@@ -29,12 +29,12 @@ int main() {
 	system("cls");
 
 	Character player1(name, hp, attack); // just change player1 if you dont like its name
-										// remind me to change this to Player player1 later when player class is added
-					
+	// remind me to change this to Player player1 later when player class is added
+
 	Character enemy1("Enemy", 10, 1);
 	// homescreen
 	while (isActive) {
-		world.printCombatUI(player1.getName(), player1.getHp(), player1.getAttack(), enemy1.getHp(), 1, world.getCredits()); // same with this
+		world.printCombatUI(player1.getName(), player1.getHp(), player1.getAttack(), enemy1.getHp(), enemy1.getAttack(), world.getCredits()); // same with this
 		char keyPressed = _getch();
 		system("cls");
 
