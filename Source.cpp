@@ -34,7 +34,7 @@ int main() {
 	Character enemy1("Enemy", 10, 1);
 	// homescreen
 	while (isActive) {
-		world.printCombatUI(player1.getName(), player1.getHp(), player1.getAttack(), enemy1.getHp(), 1, world.getCredits()); // same with this
+		world.printCombatUI(player1.getName(), player1.getHp(), player1.getAttack(), enemy1.getHp(), enemy1.getAttack(), world.getCredits()); // same with this
 		char keyPressed = _getch();
 		system("cls");
 
