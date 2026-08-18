@@ -8,6 +8,7 @@ int main() {
 	world.namingUI();
 	bool isActive = false;
 	if (world.playerClassUI() != "null") isActive = true;
+	std::cout << "test run" << std::endl;
 
 	// homescreen
 	while (isActive) {
