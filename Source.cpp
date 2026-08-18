@@ -5,14 +5,14 @@
 int main() {
 	std::cout << "The Jimbob Paradox" << std::endl;
 	World world;
-	world.namingUI();
+	std::string name = world.namingUI(); // you could probably replace std::string name here with the name var saved in player class
 	bool isActive = false;
 	if (world.playerClassUI() != "null") isActive = true;
-	std::cout << "test run" << std::endl;
+	system("cls");
 
 	// homescreen
 	while (isActive) {
-		world.printCombatUI();
+		world.printCombatUI(name); // same with this
 		char keyPressed = _getch();
 		system("cls");
 	};

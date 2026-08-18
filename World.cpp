@@ -1,5 +1,4 @@
 #include "World.h"
-#include "Character.h"
 #include <iostream>	
 #include <conio.h>
 
@@ -44,8 +43,14 @@ std::string World::playerClassUI() {
 	return chosenClass;
 }
 
-void World::printCombatUI() {
+void World::printCombatUI(std::string playerName) {
 	std::cout << "The Jimbob Paradox" << std::endl;
+	std::cout << playerName << " Health: " << std::endl;
+	std::cout << "Attack: " << std::endl;
+	std::cout << std::endl;
+	std::cout <<"Enemy Health: " << std::endl;
+	std::cout << "Attack: " << std::endl;
+
 	grid[6][7] = 'x';
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 10; j++) {
@@ -53,7 +58,4 @@ void World::printCombatUI() {
 		}
 		std::cout << std::endl;
 	}
-}
-
-void printDialogueUI() {
 }

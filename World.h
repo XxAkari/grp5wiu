@@ -11,8 +11,6 @@ public:
 	std::string namingUI();
 	std::string playerClassUI();
 
-	void printCombatUI();
-	void printDialogueUI();
-
+	void printCombatUI(std::string playerName);
 };
 
