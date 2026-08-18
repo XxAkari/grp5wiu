@@ -1,16 +1,21 @@
 #pragma once
-#include "World.h"
 #include <string>
 
-class Character :
-    public World
-{
-private:
-    std::string name;
-    int playerClass;
-
+class Character {
 public:
-    Character();
-    void setPlayerName(std::string playerName);
-};  
+	Character();
+	Character(std::string name, int hp, int attack);
 
+	bool isAlive();
+	void takeDamage(int amount);
+	int getAttack();
+	std::string getName();
+	int getHp();
+	int getMaxHp();
+
+private:
+	std::string name;
+	int hp;
+	int maxHp;
+	int attack;
+};
