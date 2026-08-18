@@ -1,30 +1,30 @@
 #include "Character.h"
 
 Character::Character(std::string name, int hp, int attack)
-    : name(name), hp(hp), maxHp(hp), attack(attack) {
+	: name(name), hp(hp), maxHp(hp), attack(attack) {
 };
 
 bool Character::isAlive() {
-    return hp > 0;
+	return hp > 0;
 }
 
 void Character::takeDamage(int amount) {
-    hp -= amount;
-    if (hp < 0) hp = 0;
+	hp -= amount;
+	if (hp < 0) hp = 0;
 }
 
 int Character::getAttack() {
-    return attack;
+	return attack;
 }
 
 std::string Character::getName() {
-    return name;
+	return name;
 }
 
 int Character::getHp() {
-    return hp;
+	return hp;
 }
 
 int Character::getMaxHp() {
-    return maxHp;
+	return maxHp;
 }

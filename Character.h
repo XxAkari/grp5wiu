@@ -3,18 +3,18 @@
 
 class Character {
 public:
-    Character(std::string name, int hp, int attack);
+	Character(std::string name, int hp, int attack);
 
-    bool isAlive();
-    void takeDamage(int amount);
-    int getAttack();
-    std::string getName();
-    int getHp();
-    int getMaxHp();
+	bool isAlive();
+	void takeDamage(int amount);
+	int getAttack();
+	std::string getName();
+	int getHp();
+	int getMaxHp();
 
 private:
-    std::string name;
-    int hp;
-    int maxHp;
-    int attack;
+	std::string name;
+	int hp;
+	int maxHp;
+	int attack;
 };
