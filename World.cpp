@@ -43,19 +43,20 @@ std::string World::playerClassUI() {
 	return chosenClass;
 }
 
-void World::printCombatUI(std::string playerName) {
+void World::printCombatUI(std::string playerName, int pHp, int pAtk, int eHp, int eAtk){
 	std::cout << "The Jimbob Paradox" << std::endl;
-	std::cout << playerName << " Health: " << std::endl;
-	std::cout << "Attack: " << std::endl;
+	std::cout << playerName << " Health: " << pHp << std::endl;
+	std::cout << "Attack: " << pAtk << std::endl; // remind me to fill these in w actual stats from player
 	std::cout << std::endl;
-	std::cout <<"Enemy Health: " << std::endl;
-	std::cout << "Attack: " << std::endl;
+	std::cout <<"Enemy Health: " << eHp << std::endl; // remind me to fill these in w actual stats from enemy
+	std::cout << "Attack: " << eAtk << std::endl;
 
-	grid[6][7] = 'x';
+	grid[6][7] = 'x'; // dw about this im just test running
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 10; j++) {
 			std::cout << grid[i][j] << ' ';
 		}
 		std::cout << std::endl;
 	}
+
 }
