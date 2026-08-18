@@ -46,9 +46,9 @@ std::string World::playerClassUI() {
 void World::printCombatUI(std::string playerName, int pHp, int pAtk, int eHp, int eAtk){
 	std::cout << "The Jimbob Paradox" << std::endl;
 	std::cout << playerName << " Health: " << pHp << std::endl;
-	std::cout << "Attack: " << pAtk << std::endl; // remind me to fill these in w actual stats from player
+	std::cout << "Attack: " << pAtk << std::endl;
 	std::cout << std::endl;
-	std::cout <<"Enemy Health: " << eHp << std::endl; // remind me to fill these in w actual stats from enemy
+	std::cout <<"Enemy Health: " << eHp << std::endl; 
 	std::cout << "Attack: " << eAtk << std::endl;
 
 	grid[6][7] = 'x'; // dw about this im just test running

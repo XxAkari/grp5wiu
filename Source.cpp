@@ -9,7 +9,6 @@ int main() {
 	std::string name = world.namingUI(); // you could probably replace std::string name here with the name var saved in player class
 	bool isActive = false;
 	std::string plyClass = world.playerClassUI();
-	std::cout << plyClass << std::endl;
 	int hp = 0, attack = 0;
 	if (plyClass != "null") {
 		isActive = true;
@@ -24,7 +23,7 @@ int main() {
 			hp = 50, attack = 20;
 		}
 	}
-	// system("cls");
+	system("cls");
 
 	Character player1(name, hp, attack); // just change player1 if you dont like its name
 
