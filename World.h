@@ -13,6 +13,7 @@ public:
 	World();
 	int getCredits(); // accessor to credits value, not the earning one
 	int getCurrentLevel();
+	void changeLevel(); // level increment
 	std::string namingUI();
 	std::string playerClassUI();
 

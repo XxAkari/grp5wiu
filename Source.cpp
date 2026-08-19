@@ -11,7 +11,8 @@ int main() {
 	Dialogue d;
 	std::cout << "The Jimbob Paradox" << std::endl;
 	World world;
-	std::cout << "After stealing a sandwich from your roommate, you fall through a portal and arrive in a new world. You're confused, stuck in a new place with no clear way out." << std::endl;
+	std::cout << "After stealing a sandwich from your roommate, you fall through a portal and arrive in a new world." << std::endl;
+	std::cout << "You're confused, stuck in a new place with no clear way out." << std::endl;
 	std::string name = world.namingUI(); // you could probably replace std::string name here with the name var saved in player class
 	bool isActive = false;
 	std::string plyClass = world.playerClassUI();
@@ -47,29 +48,26 @@ int main() {
 			if (keyPressed == 'x') enemy1.takeDamage(2);
 			if (enemy1.getHp() <= 0) {
 				system("cls");
-				world.printCombatUI(player1.getName(), player1.getHp(), player1.getAttack(), enemy1.getHp(), enemy1.getAttack(), world.getCredits()); // same with this
-				std::cout << "You killed " << enemy1.getName() << "!" << std::endl;
+				d.printEndDialogue(world.getCurrentLevel(), player1.getName());
+				world.changeLevel();
 				std::cout << "Press [E] to continue" << std::endl;
 				keyPressed = _getch();
 				if (keyPressed == 'e') inCombat = false;
 			}
-
 		}
 	
 
 		else {
 			world.earnCredits(enemy1.getName());
-			d.loadDialogue(playerPtr->getName());
-			d.printDialogue();
+			d.printDialogue(world.getCurrentLevel(), player1.getName());
 			std::cout << "Press any key to continue..." << std::endl;
 			keyPressed = _getch();
 			inCombat = true;
 		}
 
-		//logic: kill enemy
-		// enemy.getName(); after death to find out what type it is
-		// then i throw it into earnCredits()
-		// ????????????
+		if (world.getCurrentLevel() > 8) {
+			isActive = false;
+		}
 	};
 
 	return 0;

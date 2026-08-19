@@ -108,3 +108,7 @@ void World::earnCredits(std::string enemyType) {
 	else if (enemyType == "Boss") creditsRewarded = rand() % 5 + 10;
 	credits += creditsRewarded;
 }
+
+void World::changeLevel() {
+	currentLevel++;
+}
