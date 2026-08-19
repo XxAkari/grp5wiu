@@ -1,4 +1,5 @@
 #include "World.h"
+#include "Dialogue.h"
 #include "Enemy.h"
 #include <iostream>	
 #include <conio.h>
@@ -9,6 +10,7 @@ World::World() {
 			grid[i][j] = '.';
 		}
 	}
+	currentLevel = 0;
 	credits = 0;
 };
 
@@ -17,19 +19,14 @@ int World::getCredits() {
 }
 
 int World::getCurrentLevel() {
-	return curLevel;
-}
-
-int World::changeLevel() {
-	curLevel++;
-	return curLevel;
+	return currentLevel;
 }
 
 std::string World::namingUI() {
 	std::cout << "Name Your Character: ";
 	std::string playerName;
 	std::cin >> playerName;
-	std::cout << "hello " << playerName << std::endl;
+	std::cout << "Hello " << playerName << std::endl;
 	std::cout << "Press any key to continue";
 	return playerName;
 }
@@ -83,6 +80,7 @@ std::string World::playerClassUI() {
 		std::cout << "Invalid Class!" << std::endl;
 	}
 	std::cout << "You chose " << chosenClass << "!" << std::endl;
+	std::cout << "Press any key to continue..." << std::endl;
 	return chosenClass;
 }
 

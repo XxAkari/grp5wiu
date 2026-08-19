@@ -5,15 +5,14 @@ class World
 {
 private: 
 	char grid[10][10];
+	int currentLevel;
 	int credits;
 	int creditsRewarded;
-	int curLevel; // current level
 
 public:
 	World();
-	int getCurrentLevel();
-	int changeLevel(); // level increment
 	int getCredits(); // accessor to credits value, not the earning one
+	int getCurrentLevel();
 	std::string namingUI();
 	std::string playerClassUI();
 
