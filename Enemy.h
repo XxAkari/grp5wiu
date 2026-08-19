@@ -4,6 +4,5 @@
 
 class Enemy : public Character {
 public:
-	Enemy(std::string name, int hp, int attack);
+	Enemy(std::string name, int hp, int atk);
 };
-
