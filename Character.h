@@ -3,7 +3,6 @@
 
 class Character {
 public:
-	Character();
 	Character(std::string name, int hp, int attack);
 
 	bool isAlive();
@@ -17,5 +16,5 @@ private:
 	std::string name;
 	int hp;
 	int maxHp;
-	int attack;
+	int atk;
 };
