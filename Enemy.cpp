@@ -1,25 +1,9 @@
-#pragma once
-#include "Character.h"
-class Enemy : public Character
-{
-	int hp;
-	int attack;
+#include "Enemy.h"
 
+Enemy::Enemy(std::string name, int hp, int attack)
+	: Character(name, hp, attack) {
+}
 
-public:
-	//Constructor
-	Enemy();
-
-	//Destructor 
-	~Enemy();
-
-	//getter
-	int getHP();
-	int getATK();
-
-	//setter
-	void setHP(int newHP);
-	void setATK(int newAttack);
-
-};
-
+void Enemy::attack(Character& target) {
+	target.takeDamage(getAttack());
+}
