@@ -13,7 +13,7 @@ namespace {
 	const int FAIRY_HEAL_AMT = 20;
 	const int FAIRY_HEAL_INTERVAL = 3;
 	const int ASSASSIN_DODGE_CHANCE = 25; // out of 100
-	const int BOMBJI_EXPLOSION_DMG = 12;
+	const int BOMBJI_EXPLOSION_DMG = 1;
 }
 
 Combat::Combat(Character& player, Character& enemy, std::string pClassName)
@@ -45,16 +45,6 @@ void Combat::healCharacter(Character& target, int amount) {
 	if (healAmount > 0) {
 		target.takeDamage(-healAmount);
 	}
-}
-
-void Combat::printStatus() {
-	std::cout << "===================================" << std::endl;
-	std::cout << player.getName() << "  HP: " << player.getHp() << "/" << player.getMaxHp()
-		<< "   ATK: " << player.getAttack() << std::endl;
-	std::cout << enemy.getName() << "  HP: " << enemy.getHp() << "/" << enemy.getMaxHp()
-		<< "   ATK: " << enemy.getAttack() << std::endl;
-	std::cout << "===================================" << std::endl;
-	std::cout << "[X] Attack   [C] Flee" << std::endl;
 }
 
 void Combat::tickDotEffects() {
@@ -131,7 +121,6 @@ bool Combat::runCombat() {
 	std::cout << "A wild " << enemy.getName() << " appears!" << std::endl;
 
 	while (player.isAlive() && enemy.isAlive()) {
-		printStatus();
 		tickDotEffects();
 
 		if (!enemy.isAlive()) {
