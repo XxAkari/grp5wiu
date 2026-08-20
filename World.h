@@ -1,29 +1,22 @@
-#pragma once
 #include <string>
-#include "Player.h" 
-class World {
+
+#pragma once
+class World
+{
 private:
-    char grid[10][10];       
-    int credits;             
-    int currentLevel;
-    int creditsRewarded;
-    Player* player;        
+	// char grid[10][10];
+	int currentLevel;
+	int credits;
+	int creditsRewarded;
 
 public:
-    World();   // Constructor
-    ~World();  // Destructor
+	World();
+	int getCredits(); // accessor to credits value, not the earning one
+	int getCurrentLevel();
+	int changeLevel(); // level increment
+	std::string namingUI();
+	std::string playerClassUI();
 
-    void startGame();
-
-    int getCredits();// accesor  to credits value, not the earning one 
-    int getCurrentLevel(); // level increment 
-    int changeLevel(); 
-
-    std::string namingUI();
-    std::string playerClassUI();
-
-    void printCombatUI(std::string playerName, int pHp, int pAtk, int eHp, int eAtk, int creds);
-    void earnCredits(std::string enemyType);
-
-    
+	void earnCredits(std::string enemyType);
+	void printCombatUI(std::string playerName, int pHp, int pAtk, int eHp, int eAtk, int creds);
 };
