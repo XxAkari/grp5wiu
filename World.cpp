@@ -5,29 +5,20 @@
 #include <conio.h>
 
 World::World() {
-	for (int i = 0; i < 10; i++) {
-		for (int j = 0; j < 10; j++) {
-			grid[i][j] = '.';
-		}
-	}
+	/*	for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 10; j++) {
+				grid[i][j] = '.';
+			}
+		} */
 	currentLevel = 0;
 	credits = 0;
 };
-
-World::~World() {
-	
-}
 
 int World::getCredits() {
 	return credits;
 }
 
 int World::getCurrentLevel() {
-	return currentLevel;
-}
-
-int World::changeLevel() {
-	currentLevel++;
 	return currentLevel;
 }
 
@@ -101,20 +92,28 @@ void World::printCombatUI(std::string playerName, int pHp, int pAtk, int eHp, in
 	std::cout << std::endl;
 	std::cout << "Enemy Health: " << eHp << std::endl;
 	std::cout << "Attack: " << eAtk << std::endl;
+	std::cout << std::endl;
+	std::cout << "Press [X] to attack the enemy" << std::endl;
 
-	grid[6][7] = 'x'; // dw about this im just test running
+	
+
+	/*grid[6][7] = 'x'; // dw about this im just test running
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 10; j++) {
 			std::cout << grid[i][j] << ' ';
 		}
 		std::cout << std::endl;
-	}
+	}*/
 
-	std::cout << "[X] Attack" << std::endl;
 }
 
 void World::earnCredits(std::string enemyType) {
 	if (enemyType == "Enemy") creditsRewarded = rand() % 7 + 5;
 	else if (enemyType == "Boss") creditsRewarded = rand() % 5 + 10;
 	credits += creditsRewarded;
+}
+
+int World::changeLevel() {
+	currentLevel++;
+	return currentLevel;
 }
