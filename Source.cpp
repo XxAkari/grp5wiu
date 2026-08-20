@@ -1,6 +1,6 @@
 #include <iostream>
 #include <conio.h>
-#include <vector>
+#include <vector> // temp placeholder for enemy
 #include "World.h"
 #include "Character.h"
 #include "Enemy.h"
@@ -21,7 +21,7 @@ int main() {
 	if (plyClass != "null") {
 		isActive = true;
 		if (plyClass == "Fairy") {
-			hp = 100; // mockup values, change later	
+			hp = 100; // mockup values can change later	
 			attack = 5;
 		}
 		else if (plyClass == "Witch") {
@@ -37,33 +37,47 @@ int main() {
 	Character* playerPtr = &player1;
 
 	std::vector<Enemy> enemies = {
-		Enemy("Enemy", 10, 1),
-		Enemy("Enemy", 15, 3),
+		Enemy("Enemy", 10, 10),
+		Enemy("Enemy", 15, 10),
 		Enemy("Boss", 25, 5)
 	};
 
 	bool inCombat = false;
 	char keyPressed;
+	Combat* activeCombat = nullptr; // persists for the whole fight n not just one keypress
 	// homescreen
 	while (isActive) {
-		system("cls");
+		system("cls"); 
 		Enemy& currentEnemy = enemies[world.getCurrentLevel()];
 
 		if (inCombat) {
+			// build the Combat object ONCE per fight, the first time we enter combat
+			
+			if (activeCombat == nullptr) {
+				activeCombat = new Combat(player1, currentEnemy, plyClass);
+			}
+
 			world.printCombatUI(player1.getName(), player1.getHp(), player1.getAttack(), currentEnemy.getHp(), currentEnemy.getAttack(), world.getCredits()); // same with this
 			keyPressed = _getch();
 			if (keyPressed == 'x')
 			{
 				currentEnemy.takeDamage(player1.getAttack());
+
+				activeCombat->applyGimmick();
+				activeCombat->tickDotEffects(); // actually apply the dots applyGimmick() started
 			}
 
 			// enemy attacks back, but only if it's still alive
-			if (currentEnemy.isAlive()) currentEnemy.attack(player1);
+			// goes through Combat now instead of currentEnemy.attack(player1) directly
+		
+			if (currentEnemy.isAlive()) activeCombat->doEnemyTurn();
 
 			if (player1.getHp() <= 0) {
 				system("cls");
 				std::cout << "You were defeated..." << std::endl;
 				isActive = false;
+				delete activeCombat;
+				activeCombat = nullptr;
 			}
 			else if (currentEnemy.getHp() <= 0) {
 				system("cls");
@@ -73,6 +87,8 @@ int main() {
 				std::cout << "Press [E] to continue" << std::endl;
 				keyPressed = _getch();
 				if (keyPressed == 'e') {
+					delete activeCombat; // fights over sp clean up so the next enemy gets a fresh Combat
+					activeCombat = nullptr;
 					int nextLevel = world.changeLevel();
 					if (nextLevel >= (int)enemies.size()) {
 						system("cls");
