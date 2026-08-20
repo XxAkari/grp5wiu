@@ -7,11 +7,6 @@ public:
 	// pClassName should be "Fairy", "Witch", "Assassin", or "" for no gimmick
 	Combat(Character& player, Character& enemy, std::string pClassName = "");
 
-	// Runs the full turn-based battle loop.
-	// Returns true if the player wins (enemy defeated),
-	// false if the player dies or flees.
-	bool runCombat();
-
 private:
 	Character& player;
 	Character& enemy;
