@@ -5,6 +5,7 @@
 #include "Character.h"
 #include "Enemy.h"
 #include "Dialogue.h"
+#include "Combat.h"
 
 int main() {
 	srand(static_cast<unsigned int>(time(0)));
@@ -51,7 +52,10 @@ int main() {
 		if (inCombat) {
 			world.printCombatUI(player1.getName(), player1.getHp(), player1.getAttack(), currentEnemy.getHp(), currentEnemy.getAttack(), world.getCredits()); // same with this
 			keyPressed = _getch();
-			if (keyPressed == 'x') currentEnemy.takeDamage(player1.getAttack());
+			if (keyPressed == 'x')
+			{
+				currentEnemy.takeDamage(player1.getAttack());
+			}
 
 			// enemy attacks back, but only if it's still alive
 			if (currentEnemy.isAlive()) currentEnemy.attack(player1);
