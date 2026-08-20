@@ -47,18 +47,22 @@ int main() {
 			keyPressed = _getch();
 			if (keyPressed == 'x') enemy1.takeDamage(2);
 			if (enemy1.getHp() <= 0) {
+				// system("cls");
+				// LEAVE THIS LINE FOR WINSCREEN
+				// keypressed = _getch();
+				// if (keypressed == 'e'){
 				system("cls");
 				d.printEndDialogue(world.getCurrentLevel(), player1.getName());
+				world.earnCredits(enemy1.getName());
 				world.changeLevel();
 				std::cout << "Press [E] to continue" << std::endl;
 				keyPressed = _getch();
 				if (keyPressed == 'e') inCombat = false;
+			// }
 			}
 		}
-	
 
 		else {
-			world.earnCredits(enemy1.getName());
 			d.printDialogue(world.getCurrentLevel(), player1.getName());
 			std::cout << "Press any key to continue..." << std::endl;
 			keyPressed = _getch();
@@ -66,6 +70,8 @@ int main() {
 		}
 
 		if (world.getCurrentLevel() > 8) {
+			// final winscreen here
+			std::cout << "You win!" << std::endl;	
 			isActive = false;
 		}
 	};

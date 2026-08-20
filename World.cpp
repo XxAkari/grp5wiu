@@ -5,11 +5,11 @@
 #include <conio.h>
 
 World::World() {
-	for (int i = 0; i < 10; i++) {
+/*	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 10; j++) {
 			grid[i][j] = '.';
 		}
-	}
+	} */
 	currentLevel = 0;
 	credits = 0;
 };
@@ -93,13 +93,13 @@ void World::printCombatUI(std::string playerName, int pHp, int pAtk, int eHp, in
 	std::cout <<"Enemy Health: " << eHp << std::endl; 
 	std::cout << "Attack: " << eAtk << std::endl;
 
-	grid[6][7] = 'x'; // dw about this im just test running
+	/*grid[6][7] = 'x'; // dw about this im just test running
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 10; j++) {
 			std::cout << grid[i][j] << ' ';
 		}
 		std::cout << std::endl;
-	}
+	}*/
 
 }
 

@@ -19,6 +19,8 @@ private:
 
 public:
 	Dialogue();
+
+	void printUI();
 	void printDialogue(int level, std::string name);
 	void printEndDialogue(int level, std::string name);
 

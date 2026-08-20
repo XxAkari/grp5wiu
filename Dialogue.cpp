@@ -25,14 +25,21 @@ Dialogue::Dialogue() {
 	endDialogue[8] = &Dialogue::printL5threeEDialogue;
 }
 
+//im really trying to push
+
+void Dialogue::printUI() {
+	std::cout << "The Jimbob Paradox" << std::endl;
+	std::cout << std::endl;
+}
 
 void Dialogue::printDialogue(int level, std::string name) {
+	printUI();
 	(this->*dialogue[level])(name);
 }
 
 void Dialogue::printEndDialogue(int level, std::string name) {
+	printUI();
 	(this->*endDialogue[level])(name);
-
 }
 
 void Dialogue::printL0Dialogue(std::string name) {

@@ -4,7 +4,7 @@
 class World
 {
 private: 
-	char grid[10][10];
+	// char grid[10][10];
 	int currentLevel;
 	int credits;
 	int creditsRewarded;
