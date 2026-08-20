@@ -2,19 +2,17 @@
 #include <iostream>
 #include <conio.h>
 
-namespace {
-	// gimmick constants
-	const int WITCH_DOT_DMG = 3;
-	const int WITCH_DOT_DURATION = 3;
-	const int ENEMY_DOT_DMG = 3;
-	const int ENEMY_DOT_DURATION = 3;
-	const int FAIRY_HEAL_AMT = 20;
-	const int FAIRY_HEAL_INTERVAL = 3;
-	const int ASSASSIN_DODGE_CHANCE = 25; // out of 100
-	const int BOMBJI_EXPLOSION_DMG = 1;
-}
 
-Combat::Combat(Character& player, Character& enemy, std::string pClassName)
+const int WITCH_DOT_DMG = 3;
+const int WITCH_DOT_DURATION = 3;
+const int ENEMY_DOT_DMG = 3;
+const int ENEMY_DOT_DURATION = 3;
+const int FAIRY_HEAL_AMT = 20;
+const int FAIRY_HEAL_INTERVAL = 3;
+const int ASSASSIN_DODGE_CHANCE = 25; // out of 100
+const int BOMBJI_EXPLOSION_DMG = 1;
+
+Combat::Combat(Character& player, Character& enemy, std::string plClassName)
 	: player(player), enemy(enemy), pClassName(pClassName),
 	witchDotTurnsLeft(0), enemyDotTurnsLeft(0), fairyTurnCounter(0) {
 
@@ -65,12 +63,6 @@ bool Combat::doPlayerTurn() {
 	char key = _getch();
 	system("cls");
 
-	if (key == 'x' || key == 'X') {
-		int dmg = player.getAttack();
-		enemy.takeDamage(dmg);
-		std::cout << player.getName() << " attacks " << enemy.getName()
-			<< " for " << dmg << " damage!" << std::endl;
-
 		if (pClassName == "Witch") {
 			witchDotTurnsLeft = WITCH_DOT_DURATION;
 			std::cout << enemy.getName() << " is cursed! (" << WITCH_DOT_DMG
@@ -86,19 +78,11 @@ bool Combat::doPlayerTurn() {
 
 		return true;
 	}
-	else if (key == 'c' || key == 'C') {
-		std::cout << player.getName() << " flees the battle!" << std::endl;
-		return false;
-	}
-
-	std::cout << "..." << std::endl;
-	return true;
-}
 
 void Combat::doEnemyTurn() {
 	if (!enemy.isAlive()) return;
 
-	if (pClassName == "Assassin" && (rand() % 100) < ASSASSIN_DODGE_CHANCE) {
+	if (pClassName == "Assassin" && (rand() % 4) < ASSASSIN_DODGE_CHANCE) {
 		std::cout << player.getName() << " dodges " << enemy.getName() << "'s attack!" << std::endl;
 		return; // dodged attack deals no damage and doesn't apply the DoT gimmick
 	}
@@ -113,42 +97,4 @@ void Combat::doEnemyTurn() {
 		std::cout << player.getName() << " is afflicted! (" << ENEMY_DOT_DMG
 			<< " dmg/turn for " << ENEMY_DOT_DURATION << " turns)" << std::endl;
 	}
-}
-
-bool Combat::runCombat() {
-	std::cout << "A wild " << enemy.getName() << " appears!" << std::endl;
-
-	while (player.isAlive() && enemy.isAlive()) {
-		tickDotEffects();
-
-		if (!enemy.isAlive()) {
-			std::cout << enemy.getName() << " succumbs to the curse!" << std::endl;
-			return true;
-		}
-		if (!player.isAlive()) {
-			std::cout << player.getName() << " has fallen..." << std::endl;
-			return false;
-		}
-
-		bool stillFighting = doPlayerTurn();
-		if (!stillFighting) return false; // fled
-
-		if (!enemy.isAlive()) {
-			std::cout << enemy.getName() << " has been defeated!" << std::endl;
-			return true;
-		}
-
-		doEnemyTurn();
-
-		if (!player.isAlive()) {
-			std::cout << player.getName() << " has fallen..." << std::endl;
-			return false;
-		}
-
-		std::cout << "Press any key to continue..." << std::endl;
-		_getch();
-		system("cls");
-	}
-
-	return !player.isAlive() ? false : true;
 }
