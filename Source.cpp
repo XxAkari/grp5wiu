@@ -51,7 +51,7 @@ int main() {
 		if (inCombat) {
 			world.printCombatUI(player1.getName(), player1.getHp(), player1.getAttack(), currentEnemy.getHp(), currentEnemy.getAttack(), world.getCredits()); // same with this
 			keyPressed = _getch();
-			if (keyPressed == 'x') currentEnemy.takeDamage(2);
+			if (keyPressed == 'x') currentEnemy.takeDamage(player1.getAttack());
 
 			// enemy attacks back, but only if it's still alive
 			if (currentEnemy.isAlive()) currentEnemy.attack(player1);
