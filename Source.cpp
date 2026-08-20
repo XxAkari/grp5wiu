@@ -7,7 +7,6 @@
 
 int main() {
 	srand(static_cast<unsigned int>(time(0)));
-
 	Dialogue d;
 	std::cout << "The Jimbob Paradox" << std::endl;
 	World world;
@@ -38,40 +37,58 @@ int main() {
 	Character enemy1("Enemy", 10, 1);
 
 	bool inCombat = false;
+	bool enemyIsAlive = false;
 	char keyPressed = _getch();
 	// homescreen
 	while (isActive) {
-		system("cls");
-		if (inCombat) {
-			world.printCombatUI(player1.getName(), player1.getHp(), player1.getAttack(), enemy1.getHp(), enemy1.getAttack(), world.getCredits()); // same with this
-			keyPressed = _getch();
-			if (keyPressed == 'x') enemy1.takeDamage(2);
-			if (enemy1.getHp() <= 0) {
-				// system("cls");
-				// LEAVE THIS LINE FOR WINSCREEN
-				// keypressed = _getch();
-				// if (keypressed == 'e'){
-				system("cls");
-				d.printEndDialogue(world.getCurrentLevel(), player1.getName());
-				world.earnCredits(enemy1.getName());
-				world.changeLevel();
-				std::cout << "Press [E] to continue" << std::endl;
+		
+		while (inCombat) {
+			system("cls");
+			if (enemyIsAlive) {
+				world.printCombatUI(player1.getName(), player1.getHp(), player1.getAttack(), enemy1.getHp(), enemy1.getAttack(), world.getCredits()); // same with this
 				keyPressed = _getch();
-				if (keyPressed == 'e') inCombat = false;
-			// }
+				if (keyPressed == 'x') enemy1.takeDamage(2);
+				if (enemy1.getHp() <= 0) enemyIsAlive = false;
+			}
+			else{
+				 system("cls");
+				 std::cout << "You killed an enemy!" << std::endl;
+				keyPressed = _getch();
+
+				if (keyPressed == 'e') {
+					system("cls");
+					world.earnCredits(enemy1.getName());
+					world.printShopUI();
+					std::cout << "Press [E] to confirme" << std::endl;
+					keyPressed = _getch();
+
+					if (keyPressed == 'e') {
+						system("cls");
+						d.printEndDialogue(world.getCurrentLevel(), player1.getName());
+						world.changeLevel();
+						std::cout << "Press [E] to continue" << std::endl;
+						keyPressed = _getch();
+						if (keyPressed == 'e') inCombat = false;
+					}
+				}
 			}
 		}
 
-		else {
+			system("cls");
 			d.printDialogue(world.getCurrentLevel(), player1.getName());
-			std::cout << "Press any key to continue..." << std::endl;
-			keyPressed = _getch();
-			inCombat = true;
-		}
+			if (world.getCurrentLevel() <= 8) {
+				std::cout << "Press any key to continue..." << std::endl;
+				keyPressed = _getch();
+				inCombat = true;
+				enemyIsAlive = true;
+			}
 
 		if (world.getCurrentLevel() > 8) {
+			system("cls");
 			// final winscreen here
-			std::cout << "You win!" << std::endl;	
+			std::cout << "You win!" << std::endl;
+			std::cout << "Press any key to quit" << std::endl;
+			keyPressed = _getch();
 			isActive = false;
 		}
 	};

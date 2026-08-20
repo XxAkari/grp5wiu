@@ -19,5 +19,7 @@ public:
 
 	void earnCredits(std::string enemyType);
 	void printCombatUI(std::string playerName, int pHp, int pAtk, int eHp, int eAtk, int creds);
+	void shopASCIIprint();
+	void printShopUI();
 };
 

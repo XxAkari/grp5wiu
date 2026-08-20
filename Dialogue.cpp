@@ -33,13 +33,16 @@ void Dialogue::printUI() {
 }
 
 void Dialogue::printDialogue(int level, std::string name) {
-	printUI();
-	(this->*dialogue[level])(name);
+	if (level < 9) {
+		printUI();
+		(this->*dialogue[level])(name);
+	}
 }
-
 void Dialogue::printEndDialogue(int level, std::string name) {
-	printUI();
-	(this->*endDialogue[level])(name);
+	if (level < 9) {
+		printUI();
+		(this->*endDialogue[level])(name);
+	}
 }
 
 void Dialogue::printL0Dialogue(std::string name) {
@@ -196,5 +199,26 @@ void Dialogue::printL5threeEDialogue(std::string name) {
 	std::cout << "Jimbo: Even if that were true, the portal to my house isn't even appearing!" << std::endl;
 	std::cout << "JB: Jimbo, you have schizophrenia. This entire world has been a hallucination." << std::endl;
 	std::cout << "It's time to wake up." << std::endl;
+}
 
+void Dialogue::bombASCII() {
+	std::cout << R"(
+                        =**++*+:                            
+           :-:        .#@@%###*%*.                          
+             .=*+-:.  +@@#=-#%%##+:=*#-     .               
+                :+%@#+*%=   -+-=+*#%@@%+*#%%@%+-            
+              .:..-#*-.=    :   ..  -#*++#%%%##%*-          
+         .--==-==+*#*=              .     .+##%##%-         
+              :*###+.                       .-#%%#*         
+             .=%%%*                            #%#+         
+              *%%%%.                          =*##          
+              :###%*.:                       :*#+           
+                -=*+##.                     .*#*:           
+                :::=+%%-.                  =#%#++-.         
+                   -+=#*+=+*-  .-:.:::+**::%++-=-:..        
+                    -===..-#+-+**+=+=-+*%%+-==-  .          
+                          ++**:===+*++==-.    :             
+                          *-+-                              
+                          + .                               
+                          :)" << std::endl;
 }
