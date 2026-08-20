@@ -1,15 +1,18 @@
 #include "World.h"
+#include "Dialogue.h"
 #include "Enemy.h"
 #include "Player.h"
 #include <iostream>	
 #include <conio.h>
 
 World::World() {
-	for (int i = 0; i < 10; i++) {
+/*	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 10; j++) {
 			grid[i][j] = '.';
 		}
-	}
+	} */
+	creditsRewarded = 0;
+	currentLevel = 0;
 	credits = 0;
 	curLevel = 1;
 	player = nullptr;
@@ -55,12 +58,7 @@ int World::getCredits() {
 }
 
 int World::getCurrentLevel() {
-	return curLevel;
-}
-
-int World::changeLevel() {
-	curLevel++;
-	return curLevel;
+	return currentLevel;
 }
 
 std::string World::namingUI() {
@@ -68,8 +66,7 @@ std::string World::namingUI() {
 	std::string playerName;
 	std::cin >> playerName;
 	std::cout << "Hello " << playerName << std::endl;
-	std::cout << "Press any key to continue...";
-	_getch(); 
+	std::cout << "Press any key to continue";
 	return playerName;
 }
 
@@ -116,25 +113,28 @@ std::string World::playerClassUI() {
 	}
 
 	std::cout << "You chose " << chosenClass << "!" << std::endl;
+	std::cout << "Press any key to continue..." << std::endl;
 	return chosenClass;
 }
 
 void World::printCombatUI(std::string playerName, int pHp, int pAtk, int eHp, int eAtk, int creds) {
 	std::cout << "The Jimbob Paradox" << std::endl;
 	std::cout << "Credits: " << creds << std::endl;
+	std::cout << std::endl;
 	std::cout << playerName << " Health: " << pHp << std::endl;
 	std::cout << "Attack: " << pAtk << std::endl;
 	std::cout << std::endl;
 	std::cout << "Enemy Health: " << eHp << std::endl;
 	std::cout << "Attack: " << eAtk << std::endl;
 
-	grid[6][7] = 'x';
+	/*grid[6][7] = 'x'; // dw about this im just test running
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 10; j++) {
 			std::cout << grid[i][j] << ' ';
 		}
 		std::cout << std::endl;
-	}
+	}*/
+
 }
 
 void World::earnCredits(std::string enemyType) {
@@ -142,3 +142,95 @@ void World::earnCredits(std::string enemyType) {
 	else if (enemyType == "Boss") creditsRewarded = rand() % 5 + 10;
 	credits += creditsRewarded;
 }
+
+void World::changeLevel() {
+	currentLevel++;
+}
+
+void World::shopASCIIprint() {
+	std::cout << R"(
+    <<<<<<<<<<< SHOP >>>>>>>>>>>
+    ____________________________
+   /                            \
+  |\___/ \___/ \___/ \___/ \___/ |
+  |  __________________          |
+  |  |                |    ____  |
+  |  |                |   | __ | |
+  |  |________________|   ||__|| |
+  |                       |   o| |
+  |_______________________|____|_|
+	)" << std::endl;
+}
+
+void World::printShopUI() {
+	std::string item[3] = { "Vitality", "Damage", "Shield" };
+	std::string desc[3] = { "Increases max health by 20.","Increases damage by 3.","Decreases damage taken by 5." };
+	int itemCount = 0;
+	bool proceed = false;
+	bool affordable = true;
+	char keypressed = '\0';
+	while (proceed == false) {
+		system("cls");
+		std::cout << "The Jimbob Paradox" << std::endl;
+		std::cout << "Credits: " << credits << std::endl;
+		shopASCIIprint();
+		std::cout << "[ Items In Stock ]" << std::endl;
+		std::cout << "Item: " << item[itemCount]<< std::endl;
+		std::cout << "Description: " << desc[itemCount] << std::endl;
+		std::cout << "Cost: 10" << std::endl;
+		std::cout << std::endl;
+		std::cout << "[Z] View Previous / [X] View Next / [E] Skip Shop" << std::endl;;
+		for (int i = 0; i < 3; i++) {
+			std::cout << " [" << i + 1 << "] Buy " << item[i];
+		}
+		std::cout << std::endl;
+		if (!affordable) std::cout << "Not enough credits!" << std::endl;
+		keypressed = _getch();
+		switch (keypressed) {
+		case 'z':
+			itemCount--;
+			if (itemCount < 0) itemCount = 2;
+			affordable = true;
+			break;
+		case 'x':
+			itemCount++;
+			if (itemCount > 2) itemCount = 0;
+			affordable = true;
+			break;
+		case 'e':
+			proceed = true;
+			break;
+		case '1':
+			if (credits >= 10) {
+				std::cout << "You bought " << item[0] << std::endl;
+				credits -= 10;
+				std::cout << "Press any key to continue" << std::endl;
+				keypressed = _getch();
+				// player hp goes up
+			}
+			else affordable = false;
+			break;
+		case '2':
+			if (credits >= 10) {
+				std::cout << "You bought " << item[1] << std::endl;
+				credits -= 10;
+				std::cout << "Press any key to continue" << std::endl;
+				keypressed = _getch();
+				// player damage goes up
+			}
+			else affordable = false;
+			break;
+		case '3':
+			if (credits >= 10) {
+				std::cout << "You bought " << item[2] << std::endl;
+				credits -= 10;
+				std::cout << "Press any key to continue" << std::endl;
+				keypressed = _getch();
+				// player defense up
+			}
+			else affordable = false;
+			break;
+		}
+	}
+}
+
