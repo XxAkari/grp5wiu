@@ -31,7 +31,6 @@ private:
 	int getEnemyAttackDamage(); // handles the explode gimmick's bonus damage
 	void healCharacter(Character& target, int amount); // caps at maxHp, no heal() on Character yet
 
-	void printStatus();
 	void tickDotEffects();     // applies + decrements any active DoTs at the start of a round
 	bool doPlayerTurn();       // returns false if the player chose to flee
 	void doEnemyTurn();
