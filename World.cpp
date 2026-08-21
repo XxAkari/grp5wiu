@@ -1,5 +1,6 @@
 #include "World.h"
 #include "Dialogue.h"
+#include "Character.h"
 #include "Enemy.h"
 #include <iostream>	
 #include <conio.h>
@@ -85,11 +86,11 @@ std::string World::playerClassUI() {
 	return chosenClass;
 }
 
-void World::printCombatUI(std::string playerName, int pHp, int pAtk, int eHp, int eAtk, int creds){
+void World::printCombatUI(std::string playerName, int pHp, int pMaxHp, int pAtk, int eHp, int eAtk, int creds){
 	std::cout << "The Jimbob Paradox" << std::endl;
 	std::cout << "Credits: " << creds << std::endl;
 	std::cout << std::endl;
-	std::cout << playerName << " Health: " << pHp << std::endl;
+	std::cout << playerName << " Health: " << pHp << "/" << pMaxHp << std::endl;
 	std::cout << "Attack: " << pAtk << std::endl;
 	std::cout << std::endl;
 	std::cout <<"Enemy Health: " << eHp << std::endl; 
@@ -130,7 +131,7 @@ void World::shopASCIIprint() {
 	)" << std::endl;
 }
 
-void World::printShopUI() {
+void World::printShopUI(Character* player) {
 	std::string item[3] = { "Vitality", "Damage", "Shield" };
 	std::string desc[3] = { "Increases max health by 20.","Increases damage by 3.","Decreases damage taken by 5." };
 	int itemCount = 0;
@@ -174,7 +175,7 @@ void World::printShopUI() {
 				credits -= 10;
 				std::cout << "Press any key to continue" << std::endl;
 				keypressed = _getch();
-				// player hp goes up
+				player->addMaxHP(20);
 			}
 			else affordable = false;
 			break;
@@ -184,7 +185,7 @@ void World::printShopUI() {
 				credits -= 10;
 				std::cout << "Press any key to continue" << std::endl;
 				keypressed = _getch();
-				// player damage goes up
+				player->addAttack(3);
 			}
 			else affordable = false;
 			break;
