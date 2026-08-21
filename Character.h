@@ -12,6 +12,8 @@ public:
 	std::string getName();
 	int getHp();
 	int getMaxHp();
+	void setHp();
+	void setAttack();
 
 private:
 	std::string name;
