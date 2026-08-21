@@ -31,7 +31,7 @@ int main() {
 	}
 
 	Character player1(name, hp, attack); // just change player1 if you dont like its name
-										// remind me to change this to Player player1 later when player class is added
+	// remind me to change this to Player player1 later when player class is added
 	Character* playerPtr = &player1;
 
 	Character enemy1("Enemy", 10, 1);
@@ -41,7 +41,7 @@ int main() {
 	char keyPressed = _getch();
 	// homescreen
 	while (isActive) {
-		
+
 		while (inCombat) {
 			system("cls");
 			if (enemyIsAlive) {
@@ -50,16 +50,16 @@ int main() {
 				if (keyPressed == 'x') enemy1.takeDamage(2);
 				if (enemy1.getHp() <= 0) enemyIsAlive = false;
 			}
-			else{
-				 system("cls");
-				 std::cout << "You killed an enemy!" << std::endl;
+			else {
+				system("cls");
+				std::cout << "You killed an enemy!" << std::endl;
 				keyPressed = _getch();
 
 				if (keyPressed == 'e') {
 					system("cls");
 					world.earnCredits(enemy1.getName());
 					world.printShopUI();
-					std::cout << "Press [E] to confirme" << std::endl;
+					std::cout << "Press [E] to confirm" << std::endl;
 					keyPressed = _getch();
 
 					if (keyPressed == 'e') {
@@ -74,14 +74,14 @@ int main() {
 			}
 		}
 
-			system("cls");
-			d.printDialogue(world.getCurrentLevel(), player1.getName());
-			if (world.getCurrentLevel() <= 8) {
-				std::cout << "Press any key to continue..." << std::endl;
-				keyPressed = _getch();
-				inCombat = true;
-				enemyIsAlive = true;
-			}
+		system("cls");
+		d.printDialogue(world.getCurrentLevel(), player1.getName());
+		if (world.getCurrentLevel() <= 8) {
+			std::cout << "Press any key to continue..." << std::endl;
+			keyPressed = _getch();
+			if (keyPressed == 'e') inCombat = true;
+			enemyIsAlive = true;
+		}
 
 		if (world.getCurrentLevel() > 8) {
 			system("cls");
