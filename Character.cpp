@@ -1,7 +1,5 @@
 #include "Character.h"
 
-Character::Character() {}
-
 Character::Character(std::string name, int hp, int attack)
 	: name(name), hp(hp), maxHp(hp), attack(attack) {
 };
@@ -32,7 +30,7 @@ int Character::getMaxHp() {
 }
 
 void Character::setAttack() {
-	this->attack=attack
+	this->attack = attack;
 }
 
 void Character::setHp() {

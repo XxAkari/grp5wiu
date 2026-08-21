@@ -3,7 +3,7 @@
 
 class Character {
 public:
-	Character();
+	Character() = default;
 	Character(std::string name, int hp, int attack);
 
 	bool isAlive();

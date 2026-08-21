@@ -2,11 +2,6 @@
 #include "Enemy.h"
 class Boss : public Enemy
 {
-	//Constructor
-	Boss();
-
-	//Destructor
-	~Boss();
 
 	//Getter
 	int getHP();

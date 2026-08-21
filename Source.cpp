@@ -91,7 +91,7 @@ int main() {
 			keyPressed = _getch();
 			isActive = false;
 		}
-	};
+	}
 
 	return 0;
 }
