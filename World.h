@@ -1,4 +1,5 @@
 #include <string>
+#include "Character.h"
 
 #pragma once
 class World
@@ -17,9 +18,9 @@ public:
 	std::string namingUI();
 	std::string playerClassUI();
 
-	void earnCredits(std::string enemyType);
-	void printCombatUI(std::string playerName, int pHp, int pAtk, int eHp, int eAtk, int creds);
+	void earnCredits(std::string enemyType);	
+	void printCombatUI(std::string playerName, int pHp, int pMaxHp, int pAtk, int eHp, int eAtk, int creds);
 	void shopASCIIprint();
-	void printShopUI();
+	void printShopUI(Character* player);
 };
 
