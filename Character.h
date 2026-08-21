@@ -13,6 +13,10 @@ public:
 	int getHp();
 	int getMaxHp();
 
+	void addAttack(int atk);
+	void addHp(int hp);
+	void addMaxHP(int hp);
+
 private:
 	std::string name;
 	int hp;
