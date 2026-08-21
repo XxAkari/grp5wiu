@@ -62,9 +62,13 @@ int main() {
 			if (keyPressed == 'x')
 			{
 				currentEnemy.takeDamage(player1.getAttack());
-
 				activeCombat->applyGimmick();
-				activeCombat->tickDotEffects(); // actually apply the dots applyGimmick() started
+				activeCombat->tickDotEffects();
+
+				currentEnemy.takeDamage(player1.getAttack());
+
+				std::cout << "Press [E] to continue." << std::endl;
+				_getch();
 			}
 
 			// enemy attacks back but only if it's still alive
