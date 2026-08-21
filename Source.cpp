@@ -45,7 +45,7 @@ int main() {
 		while (inCombat) {
 			system("cls");
 			if (enemyIsAlive) {
-				world.printCombatUI(player1.getName(), player1.getHp(), player1.getAttack(), enemy1.getHp(), enemy1.getAttack(), world.getCredits()); // same with this
+				world.printCombatUI(player1.getName(), player1.getHp(), player1.getMaxHp(), player1.getAttack(), enemy1.getHp(), enemy1.getAttack(), world.getCredits()); // same with this
 				keyPressed = _getch();
 				if (keyPressed == 'x') enemy1.takeDamage(2);
 				if (enemy1.getHp() <= 0) enemyIsAlive = false;
@@ -58,7 +58,7 @@ int main() {
 				if (keyPressed == 'e') {
 					system("cls");
 					world.earnCredits(enemy1.getName());
-					world.printShopUI();
+					world.printShopUI(playerPtr);
 					std::cout << "Press [E] to confirm" << std::endl;
 					keyPressed = _getch();
 
