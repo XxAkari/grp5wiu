@@ -19,7 +19,7 @@ int Character::getAttack() {
 std::string Character::getName() {
 	return name;
 }
-
+  
 int Character::getHp() {
 	return hp;
 }
