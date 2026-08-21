@@ -30,3 +30,15 @@ int Character::getHp() {
 int Character::getMaxHp() {
 	return maxHp;
 }
+
+void Character::addHp(int hp) {
+	this->hp += hp;
+}
+
+void Character::addMaxHP(int hp) {
+	maxHp += hp;
+}
+
+void Character::addAttack(int atk) {
+	attack += atk;
+}
