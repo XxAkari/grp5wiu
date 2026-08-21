@@ -1,7 +1,9 @@
+#include <string>
+
 #pragma once
 class World
 {
-private: 
+private:
 	// char grid[10][10];
 	int currentLevel;
 	int credits;
@@ -11,7 +13,7 @@ public:
 	World();
 	int getCredits(); // accessor to credits value, not the earning one
 	int getCurrentLevel();
-	void changeLevel(); // level increment
+	int changeLevel(); // level increment
 	std::string namingUI();
 	std::string playerClassUI();
 
