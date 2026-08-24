@@ -1,6 +1,7 @@
 #include "Dialogue.h"
 #include "Character.h"
 #include <iostream>
+#include <conio.h>
 
 Dialogue::Dialogue() {
 
@@ -24,24 +25,29 @@ Dialogue::Dialogue() {
 	endDialogue[7] = &Dialogue::printL5twoEDialogue;
 	endDialogue[8] = &Dialogue::printL5threeEDialogue;
 }
-
-//im really trying to push
-
 void Dialogue::printUI() {
 	std::cout << "The Jimbob Paradox" << std::endl;
 	std::cout << std::endl;
 }
 
-void Dialogue::printDialogue(int level, std::string name) {
+char Dialogue::printDialogue(int level, std::string name) {
 	if (level < 9) {
+		system("cls");
 		printUI();
 		(this->*dialogue[level])(name);
+		std::cout << "Press [E] to continue..." << std::endl;
+		char keyPressed = _getch();
+		return keyPressed;
 	}
 }
-void Dialogue::printEndDialogue(int level, std::string name) {
+char Dialogue::printEndDialogue(int level, std::string name) {
 	if (level < 9) {
+		system("cls");
 		printUI();
 		(this->*endDialogue[level])(name);
+		std::cout << "Press [E] to continue" << std::endl;
+		char keyPressed = _getch();
+		return keyPressed;
 	}
 }
 
@@ -154,11 +160,11 @@ void Dialogue::printL4twoEDialogue(std::string name) {
 
 void Dialogue::printL5oneDialogue(std::string name) {
 	std::cout << "(You glance around to a surprisingly empty surrounding.)" << std::endl;
-	std::cout << name << ":  Where are the enemies? Usually I’d see them by now..." << std::endl;
+	std::cout << name << ":  Where are the enemies? Usually I'd see them by now..." << std::endl;
 	std::cout << name << ": (muttering) Has Bobmij been telling them of my location?" << std::endl;
 	std::cout << "???: Yes, yes he has." << std::endl;
 	std::cout << "???: Although all of us know about you and the things you've done." << std::endl;
-	std::cout << "JB: Short introduction, the name’s Jimbob, the ‘original’ of all the enemies you've seen so far." << std::endl;
+	std::cout << "JB: Short introduction, the name's Jimbob, the 'original' of all the enemies you've seen so far." << std::endl;
 	std::cout << "JB: I assume Bobmij didn't tell you they're all variants of me." << std::endl;
 	std::cout << name << ": What? Then why was I brought into this world? I just wanted a sandwich." << std::endl;
 	std::cout << "JB: If you win this fight, I'll tell you." << std::endl;
@@ -186,7 +192,7 @@ void Dialogue::printL5threeDialogue(std::string name) {
 void Dialogue::printL5threeEDialogue(std::string name) {
 	std::cout << "(Jimbob falters, weak on the ground, yet his eyes glimmer with hatred as he looks at you.)" << std::endl;
 	std::cout << name << ": I've defeated you!" << std::endl;
-	std::cout << name << "Now tell me why I was dragged into this world, and how to get back!" << std::endl;
+	std::cout << name << ": Now tell me why I was dragged into this world, and how to get back!" << std::endl;
 	std::cout << "JB: This is YOUR world. You made us. You made this place." << std::endl;
 	std::cout << name << ": What? That's impossible." << std::endl;
 	std::cout << "JB: Haven't you noticed we look similar to you? That's cause we are different versions of YOU." << std::endl;
@@ -199,26 +205,4 @@ void Dialogue::printL5threeEDialogue(std::string name) {
 	std::cout << "Jimbo: Even if that were true, the portal to my house isn't even appearing!" << std::endl;
 	std::cout << "JB: Jimbo, you have schizophrenia. This entire world has been a hallucination." << std::endl;
 	std::cout << "It's time to wake up." << std::endl;
-}
-
-void Dialogue::bombASCII() {
-	std::cout << R"(
-                        =**++*+:                            
-           :-:        .#@@%###*%*.                          
-             .=*+-:.  +@@#=-#%%##+:=*#-     .               
-                :+%@#+*%=   -+-=+*#%@@%+*#%%@%+-            
-              .:..-#*-.=    :   ..  -#*++#%%%##%*-          
-         .--==-==+*#*=              .     .+##%##%-         
-              :*###+.                       .-#%%#*         
-             .=%%%*                            #%#+         
-              *%%%%.                          =*##          
-              :###%*.:                       :*#+           
-                -=*+##.                     .*#*:           
-                :::=+%%-.                  =#%#++-.         
-                   -+=#*+=+*-  .-:.:::+**::%++-=-:..        
-                    -===..-#+-+**+=+=-+*%%+-==-  .          
-                          ++**:===+*++==-.    :             
-                          *-+-                              
-                          + .                               
-                          :)" << std::endl;
 }
