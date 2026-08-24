@@ -21,7 +21,7 @@ int main() {
 	if (plyClass != "null") {
 		isActive = true;
 		if (plyClass == "Fairy") {
-			hp = 100; // mockup values can change later	
+			hp = 1000; // mockup values can change later	
 			attack = 5;
 		}
 		else if (plyClass == "Witch") {
@@ -37,7 +37,7 @@ int main() {
 	Character* playerPtr = &player1;
 
 	std::vector<Enemy> enemies = {
-		Enemy("Enemy", 10, 10),
+		Enemy("Bombji", 100, 3),
 		Enemy("Enemy", 15, 10),
 		Enemy("Boss", 25, 5)
 	};
@@ -73,6 +73,9 @@ int main() {
 
 			// enemy attacks back but only if it's still alive
 			if (currentEnemy.isAlive()) activeCombat->doEnemyTurn();
+			std::cout << "Press [E] to continue." << std::endl;
+			_getch();
+
 
 			if (player1.getHp() <= 0) {
 				system("cls");
