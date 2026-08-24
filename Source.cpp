@@ -8,87 +8,78 @@
 int main() {
 	srand(static_cast<unsigned int>(time(0)));
 	Dialogue d;
-	std::cout << "The Jimbob Paradox" << std::endl;
 	World world;
+	std::cout << "The Jimbob Paradox" << std::endl;
 	std::cout << "After stealing a sandwich from your roommate, you fall through a portal and arrive in a new world." << std::endl;
 	std::cout << "You're confused, stuck in a new place with no clear way out." << std::endl;
 	std::string name = world.namingUI(); // you could probably replace std::string name here with the name var saved in player class
-	bool isActive = false;
-	std::string plyClass = world.playerClassUI();
-	int hp = 0, attack = 0;
-	if (plyClass != "null") {
-		isActive = true;
-		if (plyClass == "Fairy") {
-			hp = 100; // mockup values, change later	
-			attack = 5;
-		}
-		else if (plyClass == "Witch") {
-			hp = 25, attack = 10;
-		}
-		else if (plyClass == "Assassin") {
-			hp = 67, attack = 20;
-		}
-	}
-
-	Character player1(name, hp, attack); // just change player1 if you dont like its name
+	int hp = 0, attack = 0, maxHP = 0;
+	Character player1(name, hp, maxHP, attack); // just change player1 if you dont like its name
 	// remind me to change this to Player player1 later when player class is added
 	Character* playerPtr = &player1;
+	world.playerClassUI(playerPtr);
 
-	Character enemy1("Enemy", 10, 1);
-
+	Character enemy1("Enemy", 10, 10, 1);
+	bool isActive = true;
 	bool inCombat = false;
 	bool enemyIsAlive = false;
+	bool inShop = false;
 	char keyPressed = _getch();
 	// homescreen
 	while (isActive) {
-
 		while (inCombat) {
 			system("cls");
-			if (enemyIsAlive) {
+			if (player1.getHp() <= 0) {
+				world.printDeathScreen();
+				isActive = false;
+				inCombat = false;
+			}
+			else if (enemyIsAlive) {
 				world.printCombatUI(player1.getName(), player1.getHp(), player1.getMaxHp(), player1.getAttack(), enemy1.getHp(), enemy1.getAttack(), world.getCredits()); // same with this
 				keyPressed = _getch();
-				if (keyPressed == 'x') enemy1.takeDamage(2);
-				if (enemy1.getHp() <= 0) enemyIsAlive = false;
+				if (keyPressed == 'x') {
+					enemy1.takeDamage(2);
+					if (enemy1.getHp() <= 0) enemyIsAlive = false;
+				}
 			}
 			else {
-				system("cls");
-				std::cout << "You killed an enemy!" << std::endl;
-				keyPressed = _getch();
-
-				if (keyPressed == 'e') {
-					system("cls");
-					world.earnCredits(enemy1.getName());
-					world.printShopUI(playerPtr);
-					std::cout << "Press [E] to confirm" << std::endl;
-					keyPressed = _getch();
-
-					if (keyPressed == 'e') {
+				if (!inShop) {
+					while (keyPressed != 'e') {
 						system("cls");
-						d.printEndDialogue(world.getCurrentLevel(), player1.getName());
-						world.changeLevel();
+						std::cout << "You killed an enemy!" << std::endl;
 						std::cout << "Press [E] to continue" << std::endl;
 						keyPressed = _getch();
-						if (keyPressed == 'e') inCombat = false;
+					}
+					inShop = true;
+					world.earnCredits(enemy1.getName());
+					bool a = false;
+					while (inShop) {
+						while (!a) {
+							system("cls");
+							world.printShopUI(playerPtr);
+							std::cout << "Press [E] to confirm / any other key to return." << std::endl;
+							keyPressed = _getch();
+							a = (keyPressed == 'e');
+						}
+						if (keyPressed == 'e') {
+							keyPressed = d.printEndDialogue(world.getCurrentLevel(), player1.getName());
+							while (keyPressed != 'e') keyPressed = d.printEndDialogue(world.getCurrentLevel(), player1.getName());
+							inShop = false;
+							inCombat = false;
+							world.changeLevel();
+						}
 					}
 				}
 			}
 		}
 
-		system("cls");
-		d.printDialogue(world.getCurrentLevel(), player1.getName());
 		if (world.getCurrentLevel() <= 8) {
-			std::cout << "Press any key to continue..." << std::endl;
-			keyPressed = _getch();
-			if (keyPressed == 'e') inCombat = true;
-			enemyIsAlive = true;
+			keyPressed = d.printDialogue(world.getCurrentLevel(), player1.getName());
+			if (keyPressed == 'e') inCombat = true,enemyIsAlive = true;
+			else if (keyPressed == '8') world.cheatCode(playerPtr);
 		}
-
-		if (world.getCurrentLevel() > 8) {
-			system("cls");
-			// final winscreen here
-			std::cout << "You win!" << std::endl;
-			std::cout << "Press any key to quit" << std::endl;
-			keyPressed = _getch();
+		else {
+			world.printWinScreen();
 			isActive = false;
 		}
 	};
