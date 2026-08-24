@@ -16,11 +16,14 @@ public:
 	int getCurrentLevel();
 	void changeLevel(); // level increment
 	std::string namingUI();
-	std::string playerClassUI();
-
+	void playerClassUI(Character* player);
 	void earnCredits(std::string enemyType);	
 	void printCombatUI(std::string playerName, int pHp, int pMaxHp, int pAtk, int eHp, int eAtk, int creds);
 	void shopASCIIprint();
 	void printShopUI(Character* player);
+	void printWinScreen();
+	void printDeathScreen();
+	
+	void cheatCode(Character* player);
 };
 
