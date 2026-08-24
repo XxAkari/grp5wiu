@@ -6,11 +6,6 @@
 #include <conio.h>
 
 World::World() {
-/*	for (int i = 0; i < 10; i++) {
-		for (int j = 0; j < 10; j++) {
-			grid[i][j] = '.';
-		}
-	} */
 	creditsRewarded = 0;
 	currentLevel = 0;
 	credits = 0;
@@ -34,11 +29,11 @@ std::string World::namingUI() {
 }
 
 
-std::string World::playerClassUI() {
+void World::playerClassUI(Character* player) {
 	std::string cardname[3] = { "Fairy", "Witch", "Assassin" };
 	std::string carddesc[3] = { "placeholder 1", "placeholder 2", "placeholder 3" };
-	int cardatk[3] = {5, 10, 20};
-	int cardhp[3] = {100, 25, 67};
+	int cardatk[3] = { 5, 10, 20 };
+	int cardhp[3] = { 100, 25, 67 };
 	bool chosen = false;
 	int cardCount = 0;
 
@@ -81,10 +76,15 @@ std::string World::playerClassUI() {
 	default:
 		std::cout << "Invalid Class!" << std::endl;
 	}
-	std::cout << "You chose " << chosenClass << "!" << std::endl;
-	std::cout << "Press any key to continue..." << std::endl;
-	return chosenClass;
+	if (chosenClass != "null") {
+		player->setHealth(cardhp[cardCount]);
+		player->setMaxHP(cardhp[cardCount]);
+		player->setAttack(cardatk[cardCount]);
+		std::cout << "You chose " << chosenClass << "!" << std::endl;
+		std::cout << "Press any key to continue..." << std::endl;
+	}
 }
+
 
 void World::printCombatUI(std::string playerName, int pHp, int pMaxHp, int pAtk, int eHp, int eAtk, int creds){
 	std::cout << "The Jimbob Paradox" << std::endl;
@@ -95,15 +95,8 @@ void World::printCombatUI(std::string playerName, int pHp, int pMaxHp, int pAtk,
 	std::cout << std::endl;
 	std::cout <<"Enemy Health: " << eHp << std::endl; 
 	std::cout << "Attack: " << eAtk << std::endl;
-
-	/*grid[6][7] = 'x'; // dw about this im just test running
-	for (int i = 0; i < 10; i++) {
-		for (int j = 0; j < 10; j++) {
-			std::cout << grid[i][j] << ' ';
-		}
-		std::cout << std::endl;
-	}*/
-
+	std::cout << std::endl;
+	std::cout << "Press [X] to attack" << std::endl;
 }
 
 void World::earnCredits(std::string enemyType) {
@@ -203,3 +196,74 @@ void World::printShopUI(Character* player) {
 	}
 }
 
+void World::printWinScreen() {
+	system("cls");
+	// final winscreen here
+	std::cout << "You win!" << std::endl;
+	std::cout << "Press any key to quit" << std::endl;
+	_getch();
+}
+
+void World::printDeathScreen() {
+	std::cout << "You died..." << std::endl;
+}
+
+void World::cheatCode(Character* player) {
+		system("cls");
+		std::cout << "Cheat code enabled!" << std::endl;
+		std::cout << "Type 8 to reset input." << std::endl;
+		bool cheat = true;
+		char keyp = '\0';
+		std::string cheatcode = "";
+		while (cheat) {
+			keyp = _getch();
+			std::cout << keyp;
+			if (cheatcode.length() > 8) {
+				std::cout << std::endl;
+				std::cout << "Warning: Too many characters inputted. Type [clear] to clear input: ";
+				std::string resp;
+				std::cin >> resp;
+				if (resp == "clear") cheatcode.clear();
+				}
+			else {
+				cheatcode += keyp;
+				if (cheatcode == "kms") {
+					std::cout << std::endl;
+					player->setHealth(0);
+					std::cout << "Player health is now 0." << std::endl;
+					cheatcode.clear();
+				}
+				else if (cheatcode == "skip") {
+					std::cout << std::endl;
+					std::cout << "Choose the level you want to skip to (0-8) and press [Enter] to confirm: ";
+					int lvl;
+					std::cin >> lvl;
+					if (lvl < 9 && lvl >= 0) {
+						currentLevel = lvl;
+						std::cout << "Current Level: " << currentLevel << std::endl;
+					}
+					else std::cout << "Invalid output!" << std::endl;
+					cheatcode.clear();
+				}
+				else if (cheatcode == "rich") {
+					std::cout << std::endl;
+					credits += 9999;
+					std::cout << "Credits: " << credits << std::endl;
+					cheatcode.clear();
+				}
+				else if (cheatcode == "clear") {
+					std::cout << std::endl;
+					std::cout << "Input cleared!" << std::endl;
+					cheatcode.clear();
+				}
+				else if (cheatcode == "quit") {
+					std::cout << std::endl;
+					std::cout << "Cheatcode has been disabled." << std::endl;
+					std::cout << "Press [E] to return." << std::endl;
+					char x = _getch();
+					if (x == 'e') cheat = false;
+					cheatcode.clear();
+				}
+			}
+		}
+	}
