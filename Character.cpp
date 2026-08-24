@@ -2,12 +2,24 @@
 
 Character::Character() {}
 
-Character::Character(std::string name, int hp, int attack)
+Character::Character(std::string name, int hp, int maxhp, int attack)
 	: name(name), hp(hp), maxHp(hp), attack(attack) {
 };
 
 bool Character::isAlive() {
 	return hp > 0;
+}
+
+void Character::setAttack(int atk) {
+	attack = atk;
+}
+
+void Character::setHealth(int health) {
+	hp = health;
+}
+
+void Character::setMaxHP(int maxHP) {
+	maxHp = maxHP;
 }
 
 void Character::takeDamage(int amount) {
