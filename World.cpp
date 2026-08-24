@@ -223,7 +223,7 @@ void World::cheatCode(Character* player) {
 				std::cout << "Warning: Too many characters inputted. Type [clear] to clear input: ";
 				std::string resp;
 				std::cin >> resp;
-				if (resp == "clear") cheatcode.clear();
+				if (resp == "clear") cheatcode.clear(), std::cout << "Input has been cleared." << std::endl;
 				}
 			else {
 				cheatcode += keyp;
@@ -238,7 +238,7 @@ void World::cheatCode(Character* player) {
 					std::cout << "Choose the level you want to skip to (0-8) and press [Enter] to confirm: ";
 					int lvl;
 					std::cin >> lvl;
-					if (lvl < 9 && lvl >= 0) {
+					if (lvl <= 9 && lvl >= 0) {
 						currentLevel = lvl;
 						std::cout << "Current Level: " << currentLevel << std::endl;
 					}
