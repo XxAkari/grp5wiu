@@ -2,6 +2,11 @@
 #include "Enemy.h"
 class Boss : public Enemy
 {
+	//Constructor
+	Boss();
+
+	//Destructor
+	~Boss();
 
 	//Getter
 	int getHP();
@@ -11,5 +16,8 @@ class Boss : public Enemy
 	void setHP(int newHP);
 	void setATK(int newATK);
 
+public:
+	void ObobjibName();
+	void BobmijName();
+	void JimbobName();
 };
-
