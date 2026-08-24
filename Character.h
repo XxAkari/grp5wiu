@@ -15,7 +15,7 @@ public:
 	void setHp();
 	void setAttack();
 
-private:
+protected:
 	std::string name;
 	int hp;
 	int maxHp;

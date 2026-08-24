@@ -200,25 +200,3 @@ void Dialogue::printL5threeEDialogue(std::string name) {
 	std::cout << "JB: Jimbo, you have schizophrenia. This entire world has been a hallucination." << std::endl;
 	std::cout << "It's time to wake up." << std::endl;
 }
-
-void Dialogue::bombASCII() {
-	std::cout << R"(
-                        =**++*+:                            
-           :-:        .#@@%###*%*.                          
-             .=*+-:.  +@@#=-#%%##+:=*#-     .               
-                :+%@#+*%=   -+-=+*#%@@%+*#%%@%+-            
-              .:..-#*-.=    :   ..  -#*++#%%%##%*-          
-         .--==-==+*#*=              .     .+##%##%-         
-              :*###+.                       .-#%%#*         
-             .=%%%*                            #%#+         
-              *%%%%.                          =*##          
-              :###%*.:                       :*#+           
-                -=*+##.                     .*#*:           
-                :::=+%%-.                  =#%#++-.         
-                   -+=#*+=+*-  .-:.:::+**::%++-=-:..        
-                    -===..-#+-+**+=+=-+*%%+-==-  .          
-                          ++**:===+*++==-.    :             
-                          *-+-                              
-                          + .                               
-                          :)" << std::endl;
-}

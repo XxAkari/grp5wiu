@@ -45,6 +45,5 @@ public:
 	void printL5twoEDialogue(std::string name);
 	void printL5threeEDialogue(std::string name);
 
-	void bombASCII();
 };
 

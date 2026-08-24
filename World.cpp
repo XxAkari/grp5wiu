@@ -10,7 +10,6 @@ World::World() {
 				grid[i][j] = '.';
 			}
 		} */
-	creditsRewarded = 0;
 	currentLevel = 0;
 	credits = 0;
 };
@@ -88,12 +87,15 @@ std::string World::playerClassUI() {
 void World::printCombatUI(std::string playerName, int pHp, int pAtk, int eHp, int eAtk, int creds) {
 	std::cout << "The Jimbob Paradox" << std::endl;
 	std::cout << "Credits: " << creds << std::endl;
-	std::cout << std::endl;
 	std::cout << playerName << " Health: " << pHp << std::endl;
 	std::cout << "Attack: " << pAtk << std::endl;
 	std::cout << std::endl;
 	std::cout << "Enemy Health: " << eHp << std::endl;
 	std::cout << "Attack: " << eAtk << std::endl;
+	std::cout << std::endl;
+	std::cout << "Press [X] to attack the enemy" << std::endl;
+
+
 
 	/*grid[6][7] = 'x'; // dw about this im just test running
 	for (int i = 0; i < 10; i++) {
@@ -111,8 +113,9 @@ void World::earnCredits(std::string enemyType) {
 	credits += creditsRewarded;
 }
 
-void World::changeLevel() {
+int World::changeLevel() {
 	currentLevel++;
+	return currentLevel;
 }
 
 void World::shopASCIIprint() {
