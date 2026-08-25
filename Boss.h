@@ -16,5 +16,9 @@ class Boss : public Enemy
 	void setHP(int newHP);
 	void setATK(int newATK);
 
-};
+public:
+	
 
+
+
+};
