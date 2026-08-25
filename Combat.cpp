@@ -1,4 +1,6 @@
 #include "Combat.h"
+#include "Character.h"
+#include "ENemy.h"
 #include <iostream>
 #include <conio.h>
 #include <algorithm>
@@ -19,6 +21,37 @@ const int WITCH_DOT_DMG = 3;
 const int WITCH_DOT_DURATION = 3;
 const int FAIRY_HEAL_AMT = 20;
 const int ASSASSIN_DODGE_CHANCE = 25; // out of 100
+
+// explosion cutscene
+void Combat::explodeASCII() {
+	std::cout << R"(
+                        =**++*+:                            
+           :-:        .#@@%###*%*.                          
+             .=*+-:.  +@@#=-#%%##+:=*#-     .               
+                :+%@#+*%=   -+-=+*#%@@%+*#%%@%+-            
+              .:..-#*-.=    :   ..  -#*++#%%%##%*-          
+         .--==-==+*#*=              .     .+##%##%-         
+              :*###+.                       .-#%%#*         
+             .=%%%*                            #%#+         
+              *%%%%.                          =*##          
+              :###%*.:                       :*#+           
+                -=*+##.                     .*#*:           
+                :::=+%%-.                  =#%#++-.         
+                   -+=#*+=+*-  .-:.:::+**::%++-=-:..        
+                    -===..-#+-+**+=+=-+*%%+-==-  .          
+                          ++**:===+*++==-.    :             
+                          *-+-                              
+                          + .                               
+                          :)" << std::endl;
+}
+
+void Combat::printExplodeASCII()
+{
+	if (enemy.getName() == "Bombji")
+	{
+		explodeASCII();
+	}
+};
 
 
 ////////////////Enemy combat/////////////////////////////////////
@@ -57,13 +90,14 @@ int Combat::getEnemyAttackDamage() {
 
 	if (isExplodeEnemy && explosionCooldown == 0)
 	{
+		system("cls");
 		if (enemy.getName() == "Bombji")
 			damage += BOMBJI_EXPLOSION_DMG;
 
 		else if (enemy.getName() == "Bobmij")
 			damage += BOSS_EXPLOSION_DMG;
 
-	
+		printExplodeASCII();
 	}
 
 	return damage;
