@@ -10,6 +10,9 @@ public:
     void applyGimmick();
     void tickDotEffects();
     void doEnemyTurn();
+    void explodeASCII();
+    void printExplodeASCII();
+
 
 private:
     Character& player;
