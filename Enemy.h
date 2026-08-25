@@ -16,5 +16,9 @@ public:
 	void BomjibName();
 	void MobijName();
 
+	void ObobjibName();
+	void BobmijName();
+	void JimbobName();
+
 	void printEnemyName();
 };
