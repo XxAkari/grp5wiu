@@ -6,7 +6,6 @@
 class World
 {
 private: 
-	// char grid[10][10];
 	int currentLevel;
 	int credits;
 	int creditsRewarded;
@@ -26,6 +25,16 @@ public:
 	void printShopUI(Character* player);
 	void printWinScreen();
 	void printDeathScreen();
+
+	void BombjiName();
+	void BomjibName();
+	void MobijName();
+
+	void ObobjibName();
+	void BobmijName();
+	void JimbobName();
+
+	void printEnemyName(Enemy& e);
 	
 	void cheatCode(Character* player);
 };
