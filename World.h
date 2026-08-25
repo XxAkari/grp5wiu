@@ -18,7 +18,8 @@ public:
 	std::string namingUI();
 	void playerClassUI(Character* player);
 	void earnCredits(std::string enemyType);	
-	void printCombatUI(std::string playerName, int pHp, int pMaxHp, int pAtk, int eHp, int eAtk, int creds);
+	void printHP(Character& c);
+	void printCombatUI(Character& p, Character& e);
 	void shopASCIIprint();
 	void printShopUI(Character* player);
 	void printWinScreen();
