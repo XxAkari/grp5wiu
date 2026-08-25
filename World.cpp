@@ -12,6 +12,7 @@ World::World() {
 		} */
 	currentLevel = 0;
 	credits = 0;
+	creditsRewarded = 0;
 };
 
 int World::getCredits() {
@@ -95,7 +96,7 @@ void World::printCombatUI(std::string playerName, int pHp, int pAtk, int eHp, in
 	std::cout << std::endl;
 	std::cout << "Press [X] to attack the enemy" << std::endl;
 
-	
+
 
 	/*grid[6][7] = 'x'; // dw about this im just test running
 	for (int i = 0; i < 10; i++) {
@@ -108,8 +109,31 @@ void World::printCombatUI(std::string playerName, int pHp, int pAtk, int eHp, in
 }
 
 void World::earnCredits(std::string enemyType) {
-	if (enemyType == "Enemy") creditsRewarded = rand() % 7 + 5;
-	else if (enemyType == "Boss") creditsRewarded = rand() % 5 + 10;
+	if (enemyType == "Bobjig")
+	{
+		creditsRewarded = rand() % 7 + 5;
+	}
+	else if (enemyType == "Bombji")
+	{
+		creditsRewarded = rand() % 7 + 5;
+	}
+	else if (enemyType == "Mobij")
+	{
+		creditsRewarded = rand() % 7 + 5;
+	}
+		
+	else if (enemyType == "Obobjib")
+	{
+		creditsRewarded = rand() % 5 + 10;
+	}
+	else if (enemyType == "Bobmij")
+	{
+		creditsRewarded = rand() % 5 + 10;
+	}
+	else if (enemyType == "Jimbob")
+	{
+		creditsRewarded = rand() % 5 + 10;
+	}
 	credits += creditsRewarded;
 }
 
