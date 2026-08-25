@@ -42,6 +42,39 @@ void Enemy::MobijName() {
 |      | .||||. ||||.  |||||   \\/)" << std::endl;
 };
 
+void Enemy::ObobjibName() {
+    std::cout << R"(
+.||||. ||||. .||||. ||||.    ||| ||||| ||||. 
+|    | |   | |    | |   |     |    |   |   |
+|    | |   | |    | |   |     |    |   |   |
+|    | ||||. |    | ||||.     |    |   ||||.
+|    | |   | |    | |   | \   |    |   |   |
+|    | |   | |    | |   |  \  |    |   |   |
+.||||. ||||. .||||. ||||.   \\/  ||||| ||||.)" << std::endl;
+};
+
+void Enemy::BobmijName() {
+    std::cout << R"(
+||||. .||||. ||||. |\    /| |||||    |||
+|   | |    | |   | | \  / |   |       |
+|   | |    | |   | |  \/  |   |       |
+||||. |    | ||||. |      |   |       |
+|   | |    | |   | |      |   |   \   |
+|   | |    | |   | |      |   |    \  |
+||||. .||||. ||||. |      | |||||   \\/)" << std::endl;
+};
+
+void Enemy::JimbobName() {
+    std::cout << R"(
+   ||| ||||| |\    /| ||||. .||||. ||||. 
+    |    |   | \  / | |   | |    | |   |
+    |    |   |  \/  | |   | |    | |   |
+    |    |   |      | ||||. |    | ||||.
+\   |    |   |      | |   | |    | |   |
+ \  |    |   |      | |   | |    | |   |
+  \\/  ||||| |      | ||||. .||||. ||||.)" << std::endl;
+};
+
 void Enemy::printEnemyName()
 {
     if (getName() == "Bombji")
@@ -56,8 +89,21 @@ void Enemy::printEnemyName()
     {
         MobijName();
     }
+
+    else if (getName() == "Obobjib")
+    {
+        ObobjibName();
+    }
+    else if (getName() == "Bobmij")
+    {
+        BobmijName();
+    }
+    else if (getName() == "Jimbob")
+    {
+        JimbobName();
+    }
     else
     {
         std::cout << getName() << std::endl;
     }
-}
+};
