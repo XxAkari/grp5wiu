@@ -19,7 +19,7 @@ int main() {
 	Character* playerPtr = &player1;
 	world.playerClassUI(playerPtr);
 
-	Character enemy1("Enemy", 10, 10, 1);
+	Enemy enemy1("Enemy", 10, 10, 1);
 	bool isActive = true;
 	bool inCombat = false;
 	bool enemyIsAlive = false;
