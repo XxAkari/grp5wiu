@@ -109,7 +109,7 @@ void World::printCombatUI(std::string playerName, int pHp, int pAtk, int eHp, in
 }
 
 void World::earnCredits(std::string enemyType) {
-	if (enemyType == "Bobjig")
+	if (enemyType == "Bobjib")
 	{
 		creditsRewarded = rand() % 7 + 5;
 	}
