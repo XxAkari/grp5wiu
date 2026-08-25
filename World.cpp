@@ -98,6 +98,7 @@ void printHp(Character& c) {
 }
 
 void World::printStats(Character& c) {
+	std::cout << std::endl;
 	std::cout << '[' << c.getName() << ']' << std::endl;
 	printHp(c);
 	std::cout << "Attack: " << c.getAttack() << std::endl;
@@ -110,12 +111,17 @@ void World::printCombatUI(Character& p, Enemy& e){
 	printStats(p);
 	std::cout << "===============================" << std::endl;
 	printStats(e);
+	printEnemyName(e);
+	std::cout << std::endl;
+	std::cout << std::endl;
 	std::cout << "Press [X] to attack" << std::endl;
 }
 
 void World::earnCredits(std::string enemyType) {
-	if (enemyType == "Enemy") creditsRewarded = rand() % 7 + 5;
-	else if (enemyType == "Boss") creditsRewarded = rand() % 5 + 10;
+	bool isEnemy = (enemyType == "Bombji") || (enemyType == "Bomjib") || (enemyType == "Mobij");
+	bool isBoss = (enemyType == "Obobjib") || (enemyType == "Bobmij") || (enemyType == "Jimbob");
+	if (isEnemy) creditsRewarded = rand() % 7 + 5;
+	else if (isBoss) creditsRewarded = rand() % 5 + 10;
 	credits += creditsRewarded;
 }
 
@@ -209,6 +215,84 @@ void World::printShopUI(Character* player) {
 		}
 	}
 }
+
+
+void World::BombjiName() {
+	std::cout << R"(
+||||. .||||. |\    /| ||||.   ||| |||||
+|   | |    | | \  / | |   |     |   |  
+|   | |    | |  \/  | |   |     |   |  
+||||. |    | |      | ||||.     |   |  
+|   | |    | |      | |   | \   |   |  
+|   | |    | |      | |   |  \  |   |  
+||||. .||||. |      | ||||.   \\/ |||||)" << std::endl;
+};
+
+void World::BomjibName() {
+	std::cout << R"(
+||||. .||||. |\    /|    ||| ||||| ||||. 
+|   | |    | | \  / |     |   |    |   |
+|   | |    | |  \/  |     |   |    |   |
+||||. |    | |      |     |   |    ||||.
+|   | |    | |      | \   |   |    |   |
+|   | |    | |      |  \  |   |    |   |
+||||. .||||. |      |   \\/  ||||| ||||.)" << std::endl;
+};
+
+void World::MobijName() {
+	std::cout << R"(
+|\    /| .||||. ||||.  |||||    |||
+| \  / | |    | |   |    |       |
+|  \/  | |    | |   |    |       |
+|      | |    | ||||.    |       |
+|      | |    | |   |    |   \   |
+|      | |    | |   |    |    \  |
+|      | .||||. ||||.  |||||   \\/)" << std::endl;
+};
+
+void World::ObobjibName() {
+	std::cout << R"(
+.||||. ||||. .||||. ||||.    ||| ||||| ||||. 
+|    | |   | |    | |   |     |    |   |   |
+|    | |   | |    | |   |     |    |   |   |
+|    | ||||. |    | ||||.     |    |   ||||.
+|    | |   | |    | |   | \   |    |   |   |
+|    | |   | |    | |   |  \  |    |   |   |
+.||||. ||||. .||||. ||||.   \\/  ||||| ||||.)" << std::endl;
+};
+
+void World::BobmijName() {
+	std::cout << R"(
+||||. .||||. ||||. |\    /| |||||    |||
+|   | |    | |   | | \  / |   |       |
+|   | |    | |   | |  \/  |   |       |
+||||. |    | ||||. |      |   |       |
+|   | |    | |   | |      |   |   \   |
+|   | |    | |   | |      |   |    \  |
+||||. .||||. ||||. |      | |||||   \\/)" << std::endl;
+};
+
+void World::JimbobName() {
+	std::cout << R"(
+   ||| ||||| |\    /| ||||. .||||. ||||. 
+    |    |   | \  / | |   | |    | |   |
+    |    |   |  \/  | |   | |    | |   |
+    |    |   |      | ||||. |    | ||||.
+\   |    |   |      | |   | |    | |   |
+ \  |    |   |      | |   | |    | |   |
+  \\/  ||||| |      | ||||. .||||. ||||.)" << std::endl;
+};
+
+void World::printEnemyName(Enemy& e) {
+	if (e.getName() == "Bombji") BombjiName();
+	else if (e.getName() == "Bomjib") BomjibName();
+	else if (e.getName() == "Mobij") MobijName();
+	else if (e.getName() == "Obobjib") ObobjibName();
+	else if (e.getName() == "Bobmij") BobmijName();
+	else if (e.getName() == "Jimbob") JimbobName();
+}
+
+
 
 void World::printWinScreen() {
 	system("cls");
