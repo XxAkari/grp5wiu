@@ -1,5 +1,6 @@
 #include <string>
 #include "Character.h"
+#include "Enemy.h"
 
 #pragma once
 class World
@@ -19,7 +20,8 @@ public:
 	void playerClassUI(Character* player);
 	void earnCredits(std::string enemyType);	
 	void printHP(Character& c);
-	void printCombatUI(Character& p, Character& e);
+	void printStats(Character& c);
+	void printCombatUI(Character& p, Enemy& e);
 	void shopASCIIprint();
 	void printShopUI(Character* player);
 	void printWinScreen();
