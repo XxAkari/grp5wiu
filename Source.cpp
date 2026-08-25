@@ -35,7 +35,7 @@ int main() {
 				inCombat = false;
 			}
 			else if (enemyIsAlive) {
-				world.printCombatUI(player1.getName(), player1.getHp(), player1.getMaxHp(), player1.getAttack(), enemy1.getHp(), enemy1.getAttack(), world.getCredits()); // same with this
+				world.printCombatUI(player1, enemy1); // same with this
 				keyPressed = _getch();
 				if (keyPressed == 'x') {
 					enemy1.takeDamage(2);
