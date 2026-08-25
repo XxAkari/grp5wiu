@@ -209,7 +209,7 @@ void World::printWinScreen() {
 	// final winscreen here
 	std::cout << "You win!" << std::endl;
 	std::cout << "Press any key to quit" << std::endl;
-	_getch();
+	int e = _getch();
 }
 
 void World::printDeathScreen() {
@@ -243,7 +243,7 @@ void World::cheatCode(Character* player) {
 				}
 				else if (cheatcode == "skip") {
 					std::cout << std::endl;
-					std::cout << "Choose the level you want to skip to (0-8) and press [Enter] to confirm: ";
+					std::cout << "Choose the level you want to skip to (0-9) and press [Enter] to confirm: ";
 					int lvl;
 					std::cin >> lvl;
 					if (lvl <= 9 && lvl >= 0) {
@@ -260,6 +260,7 @@ void World::cheatCode(Character* player) {
 					cheatcode.clear();
 				}
 				else if (cheatcode == "sethp") {
+					std::cout << std::endl;
 					int h;
 					std::cout << "Set Health: ";
 					std::cin >> h;
