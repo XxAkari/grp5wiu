@@ -38,7 +38,7 @@ int main() {
 
 	std::vector<Enemy> enemies = {
 		Enemy("Bombji", 100, 3),
-		Enemy("Enemy", 15, 10),
+		Enemy("Bombji", 15, 10),
 		Enemy("Boss", 25, 5)
 	};
 
@@ -57,7 +57,17 @@ int main() {
 				activeCombat = new Combat(player1, currentEnemy, plyClass);
 			}
 
-			world.printCombatUI(player1.getName(), player1.getHp(), player1.getAttack(), currentEnemy.getHp(), currentEnemy.getAttack(), world.getCredits());
+			//print enemy name
+			currentEnemy.printEnemyName();
+
+			world.printCombatUI(
+				player1.getName(), 
+				player1.getHp(), 
+				player1.getAttack(), 
+				currentEnemy.getHp(), 
+				currentEnemy.getAttack(), 
+				world.getCredits());
+
 			keyPressed = _getch();
 			if (keyPressed == 'x')
 			{
@@ -67,8 +77,10 @@ int main() {
 
 				currentEnemy.takeDamage(player1.getAttack());
 
-				std::cout << "Press [E] to continue." << std::endl;
-				_getch();
+
+
+				//std::cout << "Press [E] to continue." << std::endl;
+				//_getch();
 			}
 
 			// enemy attacks back but only if it's still alive
