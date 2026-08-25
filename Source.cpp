@@ -1,6 +1,5 @@
 #include <iostream>
 #include <conio.h>
-#include <vector> // temp placeholder for enemy
 #include "World.h"
 #include "Character.h"
 #include "Enemy.h"
@@ -36,40 +35,38 @@ int main() {
 	// remind me to change this to Player player1 later when player class is added
 	Character* playerPtr = &player1;
 
-	std::vector<Enemy> enemies = {
-		Enemy("Enemy", 10, 10),
-		Enemy("Enemy", 15, 10),
-		Enemy("Boss", 25, 5)
-	};
-
 	bool inCombat = false;
 	char keyPressed;
 	Combat* activeCombat = nullptr; // persists for the whole fight n not just one keypress
+
 	// homescreen
 	while (isActive) {
-		system("cls"); 
+		system("cls");
 		Enemy& currentEnemy = enemies[world.getCurrentLevel()];
 
 		if (inCombat) {
 			// build the Combat object ONCE per fight, the first time we enter combat
-			
 			if (activeCombat == nullptr) {
 				activeCombat = new Combat(player1, currentEnemy, plyClass);
 			}
 
-			world.printCombatUI(player1.getName(), player1.getHp(), player1.getAttack(), currentEnemy.getHp(), currentEnemy.getAttack(), world.getCredits()); // same with this
+			world.printCombatUI(player1.getName(), player1.getHp(), player1.getAttack(), currentEnemy.getHp(), currentEnemy.getAttack(), world.getCredits());
 			keyPressed = _getch();
 			if (keyPressed == 'x')
 			{
 				currentEnemy.takeDamage(player1.getAttack());
-
 				activeCombat->applyGimmick();
-				activeCombat->tickDotEffects(); // actually apply the dots applyGimmick() started
+				activeCombat->tickDotEffects();
+
+				currentEnemy.takeDamage(player1.getAttack());
+
+				std::cout << "Press [E] to continue." << std::endl;
+				_getch();
+
+				turnCounter++;
 			}
 
-			// enemy attacks back, but only if it's still alive
-			// goes through Combat now instead of currentEnemy.attack(player1) directly
-		
+			// enemy attacks back but only if it's still alive
 			if (currentEnemy.isAlive()) activeCombat->doEnemyTurn();
 
 			if (player1.getHp() <= 0) {
@@ -81,40 +78,46 @@ int main() {
 			}
 			else if (currentEnemy.getHp() <= 0) {
 				system("cls");
-				world.printCombatUI(player1.getName(), player1.getHp(), player1.getAttack(), currentEnemy.getHp(), currentEnemy.getAttack(), world.getCredits()); // same with this
-				std::cout << "You killed " << currentEnemy.getName() << "!" << std::endl;
-				world.earnCredits(currentEnemy.getName());
-				std::cout << "Press [E] to continue" << std::endl;
+				std::cout << "You killed an enemy!" << std::endl;
+				std::cout << "Press [E] to confirm" << std::endl;
 				keyPressed = _getch();
 				if (keyPressed == 'e') {
-					delete activeCombat; // fights over sp clean up so the next enemy gets a fresh Combat
-					activeCombat = nullptr;
-					int nextLevel = world.changeLevel();
-					if (nextLevel >= (int)enemies.size()) {
+					system("cls");
+					world.earnCredits(currentEnemy.getName());
+					world.printShopUI();
+					std::cout << "Press [E] to confirm" << std::endl;
+					keyPressed = _getch();
+					if (keyPressed == 'e') {
 						system("cls");
-						std::cout << "You defeated every enemy! You win!" << std::endl;
-						isActive = false;
-					}
-					else {
-						inCombat = false;
+						d.printEndDialogue(world.getCurrentLevel(), player1.getName());
+
+						delete activeCombat; // fights over so clean up so the next enemy gets a fresh Combat
+						activeCombat = nullptr;
+
+						int nextLevel = world.changeLevel();
+
+						std::cout << "Press [E] to continue" << std::endl;
+						keyPressed = _getch();
+						if (keyPressed == 'e') {
+							if (nextLevel >= (int)enemies.size()) {
+								system("cls");
+								std::cout << "You defeated every enemy! You win!" << std::endl;
+								isActive = false;
+							}
+							else {
+								inCombat = false;
+							}
+						}
 					}
 				}
 			}
-
 		}
-
-
 		else {
 			d.printDialogue(world.getCurrentLevel(), playerPtr->getName());
 			std::cout << "Press any key to continue..." << std::endl;
 			keyPressed = _getch();
 			inCombat = true;
 		}
-
-		//logic: kill enemy
-		// enemy.getName(); after death to find out what type it is
-		// then i throw it into earnCredits()
-		// ????????????
 	};
 
 	return 0;
