@@ -86,24 +86,30 @@ void World::playerClassUI(Character* player) {
 }
 
 void printHp(Character& c) {
-	std::cout << c.getName() << "'s HP [";
-	for (int i = 0; i < int((c.getHp() / float(c.getMaxHp())) * 10); i++) {
-		std::cout << '/';
+	std::cout << "HP [";
+	int i = 0;
+	for (; i < int((c.getHp() / float(c.getMaxHp())) * 10); i++) {
+		std::cout << (char)254u;
 	}
-	std::cout << ']' << std::endl;
+	for (int j = 0; j < 10 - i; j++) {
+		std::cout << ' ';
+	}
+	std::cout << "] " << c.getHp() << '/' << c.getMaxHp() << std::endl;
 }
 
-void World::printCombatUI(Character& p, Character& e){
+void World::printStats(Character& c) {
+	std::cout << '[' << c.getName() << ']' << std::endl;
+	printHp(c);
+	std::cout << "Attack: " << c.getAttack() << std::endl;
+	std::cout << std::endl;
+}
+
+void World::printCombatUI(Character& p, Enemy& e){
 	std::cout << "The Jimbob Paradox" << std::endl;
 	std::cout << "Credits: " << credits << std::endl;
-	std::cout << std::endl;
-	printHp(p);
-	std::cout << p.getName() <<  "'s Health: " << p.getHp() << '/' << p.getMaxHp() << std::endl;
-	std::cout << p.getName() <<  "'s Attack: " << p.getAttack() << std::endl;
-	std::cout << std::endl;
-	std::cout << e.getName() << "'s Health: " << e.getHp() << '/' << e.getMaxHp() << std::endl;
-	std::cout << e.getName() << "'s Attack: " << e.getAttack() << std::endl;
-	std::cout << std::endl;
+	printStats(p);
+	std::cout << "===============================" << std::endl;
+	printStats(e);
 	std::cout << "Press [X] to attack" << std::endl;
 }
 
