@@ -1,32 +1,32 @@
 #include "Combat.h"
 #include <iostream>
-#include <conio.h>
+#include <cstdlib>
 #include <algorithm>
 
+namespace {
+	// gimmick constants
+	const int WITCH_DOT_DMG = 3;
+	const int WITCH_DOT_DURATION = 3;
+	const int ENEMY_DOT_DMG = 3;
+	const int ENEMY_DOT_DURATION = 3;
+	const int FAIRY_HEAL_AMT = 20;
+	const int FAIRY_HEAL_INTERVAL = 3;
+	const int ASSASSIN_DODGE_CHANCE = 25; // out of 100
+	const int BOMBJI_EXPLOSION_DMG = 12;
+}
 
-const int WITCH_DOT_DMG = 3;
-const int WITCH_DOT_DURATION = 3;
-const int ENEMY_DOT_DMG = 3;
-const int ENEMY_DOT_DURATION = 3;
-const int FAIRY_HEAL_AMT = 20;
-const int ASSASSIN_DODGE_CHANCE = 25; // out of 100
-const int BOMBJI_EXPLOSION_DMG = 1;
-
-Combat::Combat(Character& player, Character& enemy, std::string plClassName)
-	: player(player), enemy(enemy), pClassName(plClassName),
-	witchDotTurnsLeft(0), enemyDotTurnsLeft(0), fairyTurnCounter(0) {
+Combat::Combat(Character& player, Character& enemy, std::string pClassName)
+	: player(player), enemy(enemy), pClassName(pClassName),
+	witchDotTurnsLeft(0), enemyDotTurnsLeft(0), explosionCooldown(0), fairyTurnCounter(0) {
 
 	std::string name = enemy.getName();
 	isExplodeEnemy = (name == "Bombji" || name == "Bobmij");
 	isDotEnemy = (name == "Bomjib" || name == "Jimbob");
-	// Mobij, Obobij, or anything else -> both flags stay false, plain attack only
+
 }
 
 int Combat::getEnemyAttackDamage() {
 	if (isExplodeEnemy) {
-		// Bombjis atk isn't what it actually hits for
-		// Boss Bobmij doesnt have a separate number yet,
-		// so it just uses its own ATK stat until thats filled in.
 		if (enemy.getName() == "Bombji") return BOMBJI_EXPLOSION_DMG;
 		return enemy.getAttack();
 	}
@@ -35,11 +35,49 @@ int Combat::getEnemyAttackDamage() {
 
 void Combat::healCharacter(Character& target, int amount) {
 	// Character has no heal so reuse takeDamage() with a negative amount
-	// manually capped so we never overheal past maxHp
 	int missing = target.getMaxHp() - target.getHp();
 	int healAmount = std::min(amount, missing);
 	if (healAmount > 0) {
 		target.takeDamage(-healAmount);
+	}
+}
+
+void Combat::explodeASCII() {
+	std::cout << R"(
+                        =**++*+:                            
+           :-:        .#@@%###*%*.                          
+             .=*+-:.  +@@#=-#%%##+:=*#-     .               
+                :+%@#+*%=   -+-=+*#%@@%+*#%%@%+-            
+              .:..-#*-.=    :   ..  -#*++#%%%##%*-          
+         .--==-==+*#*=              .     .+##%##%-         
+              :*###+.                       .-#%%#*         
+             .=%%%*                            #%#+         
+              *%%%%.                          =*##          
+              :###%*.:                       :*#+           
+                -=*+##.                     .*#*:           
+                :::=+%%-.                  =#%#++-.         
+                   -+=#*+=+*-  .-:.:::+**::%++-=-:..        
+                    -===..-#+-+**+=+=-+*%%+-==-  .          
+                          ++**:===+*++==-.    :             
+                          *-+-                              
+                          + .                               
+                          :)" << std::endl;
+}
+
+// Called from Source.cpp right after the player's attack damage has already
+
+void Combat::applyGimmick() {
+	if (pClassName == "Witch") {
+		witchDotTurnsLeft = WITCH_DOT_DURATION;
+		std::cout << enemy.getName() << " is cursed! (" << WITCH_DOT_DMG
+			<< " dmg/turn for " << WITCH_DOT_DURATION << " turns)" << std::endl;
+	}
+
+	fairyTurnCounter++;
+	if (pClassName == "Fairy" && fairyTurnCounter % FAIRY_HEAL_INTERVAL == 0) {
+		healCharacter(player, FAIRY_HEAL_AMT);
+		std::cout << player.getName() << " heals for " << FAIRY_HEAL_AMT
+			<< " HP!" << std::endl;
 	}
 }
 
@@ -59,45 +97,16 @@ void Combat::tickDotEffects() {
 	}
 }
 
-void Combat::applyGimmick()
-{
-	// Count one player turn
-	fairyTurnCounter++;
-	// Fairy: heal 20 HP every 3 turns
-	if (pClassName == "Fairy" && fairyTurnCounter == 3)
-	{
-		healCharacter(player, FAIRY_HEAL_AMT);
-
-		std::cout << "FAIRY GIMMICK ACTIVATED!" << std::endl;
-		std::cout << player.getName()
-			<< " heals for "
-			<< FAIRY_HEAL_AMT
-			<< " HP!" << std::endl;
-
-		fairyTurnCounter = 0;
-	}
-
-	// Witch: apply 3-turn DoT
-	if (pClassName == "Witch")
-	{
-		witchDotTurnsLeft = WITCH_DOT_DURATION;
-
-		std::cout << "WITCH GIMMICK ACTIVATED!" << std::endl;
-		std::cout << enemy.getName()
-			<< " is cursed! ("
-			<< WITCH_DOT_DMG
-			<< " dmg/turn for "
-			<< WITCH_DOT_DURATION
-			<< " turns)" << std::endl;
-	}
-}
-
 void Combat::doEnemyTurn() {
 	if (!enemy.isAlive()) return;
 
 	if (pClassName == "Assassin" && (rand() % 100) < ASSASSIN_DODGE_CHANCE) {
 		std::cout << player.getName() << " dodges " << enemy.getName() << "'s attack!" << std::endl;
 		return; // dodged attack deals no damage and doesn't apply the DoT gimmick
+	}
+
+	if (isExplodeEnemy) {
+		explodeASCII();
 	}
 
 	int dmg = getEnemyAttackDamage();
@@ -110,4 +119,18 @@ void Combat::doEnemyTurn() {
 		std::cout << player.getName() << " is afflicted! (" << ENEMY_DOT_DMG
 			<< " dmg/turn for " << ENEMY_DOT_DURATION << " turns)" << std::endl;
 	}
+}
+
+int Combat::getWitchDotTurnsLeft() const {
+	return witchDotTurnsLeft;
+}
+
+int Combat::getEnemyDotTurnsLeft() const {
+	return enemyDotTurnsLeft;
+}
+
+int Combat::getTurnsUntilFairyHeal() const {
+	if (pClassName != "Fairy") return -1; // not applicable for this class
+	int remainder = fairyTurnCounter % FAIRY_HEAL_INTERVAL;
+	return (remainder == 0) ? 0 : (FAIRY_HEAL_INTERVAL - remainder);
 }
