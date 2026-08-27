@@ -11,36 +11,36 @@
 // grouped by level ,, since some levels now have more than one wave.
 
 // Level 0: tutorial fight against Bobmij 
-Boss bobmijTutorial("Bombji", 30, 2); //
+Boss bobmijTutorial("Bombji", 5, 2); //
 
 //  Level 1: Mobij 
-Enemy mobij1("Mobij", 10, 3);
+Enemy mobij1("Mobij", 15, 3);
 
 // Level 2: Obobjib summons Mobij first, then fights you himself 
-Enemy mobij2("Mobij", 12, 3);
+Enemy mobij2("Mobij", 15, 3);
 Boss obobjib2("Obobjib", 20, 5);
 
 // Level 3: Bombji 
-Enemy bombji3("Bombji", 15, 4); 
-Enemy mobij3("Mobij", 12, 3);
+Enemy bombji3("Bombji", 16, 4); 
+Enemy mobij3("Mobij", 16, 3);
 
 // Level 4 (one): Mobij and Bombji both return
-Enemy mobij4a("Mobij", 14, 4);
-Enemy bombji4a("Bombji", 16, 5);
+Enemy mobij4a("Mobij", 18, 4);
+Enemy bombji4a("Bombji", 17, 5);
 
 //  Level 4 (two): Bobmij turns on you 
-Boss bobmijBoss("Bobmij", 30, 7); 
+Boss bobmijBoss("Bobmij", 50, 10); 
 
 //  Level 5 (one): Jimbob, first appearance 
-Enemy bombji5a("Bombji", 20, 5);
-Enemy mobij5a("Mobij", 14, 4);
+Enemy bombji5a("Bombji", 20, 9);
+Enemy mobij5a("Mobij", 20, 8);
 
 //  Level 5 (two): "familiar faces" - Bomjib 
-Enemy bomjib5b("Bomjib", 20, 5);	
-Enemy mobij5b("Mobij", 14, 4);
+Enemy bomjib5b("Bomjib", 20, 10);	
+Enemy mobij5b("Mobij", 25, 9);
 
 // Level 5 (three): the real final fight 
-Boss jimbobFinal("Jimbob", 45, 9);
+Boss jimbobFinal("Jimbob", 75, 12);
 
 const int TOTAL_LEVELS = 9;
 const int MAX_WAVES = 2;
