@@ -13,16 +13,16 @@ private:
 	// std::string array = {"12", "34", "56"}
 	// then i ptr to the array????
 
-	void (Dialogue::*dialogue[9])(std::string name);
-	void (Dialogue::*endDialogue[9])(std::string name);
+	void (Dialogue::* dialogue[9])(std::string name);
+	void (Dialogue::* endDialogue[9])(std::string name);
 
 
 public:
 	Dialogue();
 
 	void printUI();
-	void printDialogue(int level, std::string name);
-	void printEndDialogue(int level, std::string name);
+	char printDialogue(int level, std::string name);
+	char printEndDialogue(int level, std::string name);
 
 	void printL0Dialogue(std::string name);
 	void printL1Dialogue(std::string name);
@@ -45,6 +45,4 @@ public:
 	void printL5twoEDialogue(std::string name);
 	void printL5threeEDialogue(std::string name);
 
-	void bombASCII();
 };
-
