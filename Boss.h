@@ -14,7 +14,4 @@ public:
 	void setHP(int newHP);
 	void setATK(int newATK);
 
-	void ObobjibName();
-	void BobmijName();
-	void JimbobName();
 };

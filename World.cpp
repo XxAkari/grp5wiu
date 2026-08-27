@@ -32,7 +32,7 @@ std::string World::namingUI() {
 
 void World::playerClassUI(Character* player) {
 	std::string cardname[3] = { "Fairy", "Witch", "Assassin" };
-	std::string carddesc[3] = { "placeholder 1", "placeholder 2", "placeholder 3" };
+	std::string carddesc[3] = { "Heals 20 hp every 3 turns", "Deals DoT for 3 turns dealing 3 dmg each", "Has a 25% chance to dodge enemy attack" };
 	int cardatk[3] = { 5, 10, 20 };
 	int cardhp[3] = { 100, 25, 67 };
 	bool chosen = false;
@@ -60,7 +60,7 @@ void World::playerClassUI(Character* player) {
 		std::cout << "Desc: " << carddesc[cardCount] << std::endl;
 		std::cout << "Attack: " << cardatk[cardCount] << std::endl;
 		std::cout << "Health: " << cardhp[cardCount] << std::endl;
-		std::cout << "[Z] Previous / [X] Next / [C] Choose" << std::endl;
+		std::cout << "\033[94m[Z]\033[0m Previous / \033[94m[X]\033[0m Next / \033[94m[C]\033[0m Choose" << std::endl;
 	}
 
 	std::string chosenClass = "null";
@@ -165,12 +165,12 @@ void World::printShopUI(Character* player) {
 		std::cout << "The Jimbob Paradox" << std::endl;
 		std::cout << "Credits: " << credits << std::endl;
 		shopASCIIprint();
-		std::cout << "[ Items In Stock ]" << std::endl;
+		std::cout << "\033[33m[ Items In Stock ]\033[0m" << std::endl;
 		std::cout << "Item: " << item[itemCount] << std::endl;
 		std::cout << "Description: " << desc[itemCount] << std::endl;
 		std::cout << "Cost: 10" << std::endl;
 		std::cout << std::endl;
-		std::cout << "[Z] View Previous / [X] View Next / [E] Skip Shop" << std::endl;;
+		std::cout << "\033[94m[Z]\033[0m View Previous / \033[94m[X]\033[0m View Next / \033[32m[E]\033[0m Skip Shop" << std::endl;;
 		for (int i = 0; i < 3; i++) {
 			std::cout << " [" << i + 1 << "] Buy " << item[i];
 		}
@@ -234,7 +234,7 @@ void World::BombjiName() {
 ||||. |    | |      | ||||.     |   |  
 |   | |    | |      | |   | \   |   |  
 |   | |    | |      | |   |  \  |   |  
-||||. .||||. |      | ||||.   \\/ |||||)" << std::endl;
+||||' '||||' |      | ||||'   \\/ |||||)" << std::endl;
 };
 
 void World::BomjibName() {
@@ -245,7 +245,7 @@ void World::BomjibName() {
 ||||. |    | |      |     |   |    ||||.
 |   | |    | |      | \   |   |    |   |
 |   | |    | |      |  \  |   |    |   |
-||||. .||||. |      |   \\/  ||||| ||||.)" << std::endl;
+||||' '||||' |      |   \\/  ||||| ||||')" << std::endl;
 };
 
 void World::MobijName() {
@@ -256,7 +256,7 @@ void World::MobijName() {
 |      | |    | ||||.    |       |
 |      | |    | |   |    |   \   |
 |      | |    | |   |    |    \  |
-|      | .||||. ||||.  |||||   \\/)" << std::endl;
+|      | '||||' ||||'  |||||   \\/)" << std::endl;
 };
 
 void World::ObobjibName() {
@@ -267,7 +267,7 @@ void World::ObobjibName() {
 |    | ||||. |    | ||||.     |    |   ||||.
 |    | |   | |    | |   | \   |    |   |   |
 |    | |   | |    | |   |  \  |    |   |   |
-.||||. ||||. .||||. ||||.   \\/  ||||| ||||.)" << std::endl;
+'||||' ||||' '||||' ||||'   \\/  ||||| ||||')" << std::endl;
 };
 
 void World::BobmijName() {
@@ -278,7 +278,7 @@ void World::BobmijName() {
 ||||. |    | ||||. |      |   |       |
 |   | |    | |   | |      |   |   \   |
 |   | |    | |   | |      |   |    \  |
-||||. .||||. ||||. |      | |||||   \\/)" << std::endl;
+||||' '||||' ||||' |      | |||||   \\/)" << std::endl;
 };
 
 void World::JimbobName() {
@@ -289,7 +289,7 @@ void World::JimbobName() {
     |    |   |      | ||||. |    | ||||.
 \   |    |   |      | |   | |    | |   |
  \  |    |   |      | |   | |    | |   |
-  \\/  ||||| |      | ||||. .||||. ||||.)" << std::endl;
+  \\/  ||||| |      | ||||' '||||' ||||')" << std::endl;
 };
 
 void World::printEnemyName(Enemy& e) {
@@ -306,13 +306,70 @@ void World::printEnemyName(Enemy& e) {
 void World::printWinScreen() {
 	system("cls");
 	// final winscreen here
-	std::cout << "You win!" << std::endl;
+	std::cout << R"(
+________________________________________________________________
+|                                                              |
+|  \     / .||||. |    |      |      | ||||||| |\      |   |   |
+|   \   /  |    | |    |      |      |    |    | \     |   |   |
+|    \./   |    | |    |      |      |    |    |  \    |   |   |
+|     |    |    | |    |      |      |    |    |   \   |   |   |
+|     |    |    | |    |      |  /\  |    |    |    \  |   |   |
+|     |    |    | |    |      | /  \ |    |    |     \ |       |
+|     |    '||||' '||||'      |/    \| ||||||| |      \|   o   |
+|                                                              |
+----------------------------------------------------------------
+.===============================================================.
+||                          ___                                ||
+||                        .'   '.               Jimbo happily  ||
+||                       / o   o \                eating a     ||
+||                      |         |               sandwich!    ||
+||                       \   v   /                             ||
+||                        '.___.'                              ||
+||                      ____ | ____                            ||
+||                 _.-'`     |     `'-._                       ||
+||              .-'        _ | __       '-.                    ||
+||               `-._     ( `^` ))     _.-'                    ||
+||                    '--<|     ||>--'                         ||
+||                        |     ||                             ||
+||                        '-----'`   ___----                   ||
+||	                       |___ ----                           ||
+||                            \____                            ||
+||                                 ----___                     ||
+||                                        ---                  ||
+'===============================================================')" << std::endl;
 	std::cout << "Press any key to quit" << std::endl;
 	int e = _getch();
 }
 
 void World::printDeathScreen() {
-	std::cout << "You died..." << std::endl;
+	std::cout << R"(
+________________________________________________________________
+|                                                              |
+|  \     / .||||. |    |      |||||. ||||||| |||||| |||||.     |
+|   \   /  |    | |    |      |    |    |    |      |    |     |
+|    \./   |    | |    |      |    |    |    |      |    |     |
+|     |    |    | |    |      |    |    |    |||||| |    |     |
+|     |    |    | |    |      |    |    |    |      |    |     |
+|     |    |    | |    |      |    |    |    |      |    |     |
+|     |    '||||' '||||'      |||||' ||||||| |||||| |||||'     |
+|                                                              |
+----------------------------------------------------------------
+ .=============================================================.
+||                                                             ||
+||                                                             ||
+||                                                             ||
+||                          ,'--------,                        ||
+||                          ',!       |                        ||
+||                          ,7_______,|                        || 
+||       .'---'.    ___     '_,------./                        ||
+||      /   X   \      ^-.             ___,,,-----             ||
+||     |      P  |,     __\_______.--''                        ||
+||      \  X    /        ,'       ^-__,                        ||
+||       '.___.'        /              ^--._______             ||
+||                  __.-                                       ||
+||                                                             ||
+||                                                             ||
+'===============================================================')" << std::endl;
 }
 
 void World::cheatCode(Character* player) {
