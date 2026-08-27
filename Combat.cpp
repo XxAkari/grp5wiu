@@ -12,34 +12,13 @@ namespace {
 	const int FAIRY_HEAL_AMT = 20;
 	const int FAIRY_HEAL_INTERVAL = 3;
 	const int ASSASSIN_DODGE_CHANCE = 25; // out of 100
-	const int BOMBJI_EXPLOSION_DMG = 12;
-}
 
-Combat::Combat(Character& player, Character& enemy, std::string pClassName)
-	: player(player), enemy(enemy), pClassName(pClassName),
-	witchDotTurnsLeft(0), enemyDotTurnsLeft(0), explosionCooldown(0), fairyTurnCounter(0) {
 
-	std::string name = enemy.getName();
-	isExplodeEnemy = (name == "Bombji" || name == "Bobmij");
-	isDotEnemy = (name == "Bomjib" || name == "Jimbob");
+	const int BOMBJI_EXPLOSION_DMG = 5;
+	const int BOMBJI_EXPLOSION_COOLDOWN = 2;
+	const int BOSS_EXPLOSION_DMG = 10;
+	const int BOSS_EXPLOSION_COOLDOWN = 1;
 
-}
-
-int Combat::getEnemyAttackDamage() {
-	if (isExplodeEnemy) {
-		if (enemy.getName() == "Bombji") return BOMBJI_EXPLOSION_DMG;
-		return enemy.getAttack();
-	}
-	return enemy.getAttack();
-}
-
-void Combat::healCharacter(Character& target, int amount) {
-	// Character has no heal so reuse takeDamage() with a negative amount
-	int missing = target.getMaxHp() - target.getHp();
-	int healAmount = std::min(amount, missing);
-	if (healAmount > 0) {
-		target.takeDamage(-healAmount);
-	}
 }
 
 void Combat::explodeASCII() {
@@ -63,6 +42,67 @@ void Combat::explodeASCII() {
                           + .                               
                           :)" << std::endl;
 }
+void Combat::printExplodeASCII()
+{
+	if (enemy.getName() == "Bombji" || enemy.getName() == "Bobmij")
+	{
+		explodeASCII();
+	}
+};
+
+Combat::Combat(Character& player, Character& enemy, std::string pClassName)
+	: player(player), enemy(enemy), pClassName(pClassName),
+	witchDotTurnsLeft(0), enemyDotTurnsLeft(0), explosionCooldown(0), fairyTurnCounter(0) {
+
+	std::string name = enemy.getName();
+	isExplodeEnemy = (name == "Bombji" || name == "Bobmij");
+	isDotEnemy = (name == "Bomjib" || name == "Jimbob");
+
+	if (isExplodeEnemy) {
+		// Bombjis atk isn't what it actually hits for
+		// Boss Bobmij doesnt have a separate number yet,
+		// so it just uses its own ATK stat until thats filled in.
+		//filled in but needs testing meowwww
+
+		if (enemy.getName() == "Bombji")
+			explosionCooldown = BOMBJI_EXPLOSION_COOLDOWN;
+		else if (enemy.getName() == "Bobmij")
+			explosionCooldown = BOSS_EXPLOSION_COOLDOWN;
+
+	}
+}	
+
+int Combat::getEnemyAttackDamage() {
+
+	int damage = enemy.getAttack();
+
+	if (isExplodeEnemy && explosionCooldown == 0)
+	{
+		system("cls");
+		if (enemy.getName() == "Bombji")
+			damage += BOMBJI_EXPLOSION_DMG;
+
+		else if (enemy.getName() == "Bobmij")
+			damage += BOSS_EXPLOSION_DMG;
+
+		printExplodeASCII();
+	}
+
+	return damage;
+};
+
+
+
+
+void Combat::healCharacter(Character& target, int amount) {
+	// Character has no heal so reuse takeDamage() with a negative amount
+	int missing = target.getMaxHp() - target.getHp();
+	int healAmount = std::min(amount, missing);
+	if (healAmount > 0) {
+		target.takeDamage(-healAmount);
+	}
+}
+
 
 // Called from Source.cpp right after the player's attack damage has already
 
@@ -105,9 +145,25 @@ void Combat::doEnemyTurn() {
 		return; // dodged attack deals no damage and doesn't apply the DoT gimmick
 	}
 
-	if (isExplodeEnemy) {
-		explodeASCII();
+	// Explosion cooldown
+	if (isExplodeEnemy)
+	{
+		if (explosionCooldown == 0)
+		{
+
+			// Reset cooldown
+			if (enemy.getName() == "Bombji")
+				explosionCooldown = BOMBJI_EXPLOSION_COOLDOWN;
+
+			else if (enemy.getName() == "Bobmij")
+				explosionCooldown = BOSS_EXPLOSION_COOLDOWN;
+		}
+		else
+		{
+			explosionCooldown--;
+		}
 	}
+
 
 	int dmg = getEnemyAttackDamage();
 	player.takeDamage(dmg);
