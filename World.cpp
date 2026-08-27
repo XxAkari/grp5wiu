@@ -33,8 +33,8 @@ std::string World::namingUI() {
 void World::playerClassUI(Character* player) {
 	std::string cardname[3] = { "Fairy", "Witch", "Assassin" };
 	std::string carddesc[3] = { "placeholder 1", "placeholder 2", "placeholder 3" };
-	int cardatk[3] = { 5, 10, 20 };
-	int cardhp[3] = { 100, 25, 67 };
+	int cardatk[3] = { 5, 7, 12 };
+	int cardhp[3] = { 100, 67, 45 };
 	bool chosen = false;
 	int cardCount = 0;
 
