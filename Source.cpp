@@ -1,11 +1,66 @@
 #include <iostream>
 #include <conio.h>
-#include <vector> // temporary enemy placeholder
 #include "World.h"
 #include "Character.h"
 #include "Enemy.h"
+#include "Boss.h"
 #include "Dialogue.h"
 #include "Combat.h"
+
+// each enemy/boss appearance is its own named object
+// grouped by level ,, since some levels now have more than one wave.
+
+// Level 0: tutorial fight against Bobmij 
+Boss bobmijTutorial("Bombji", 30, 2);
+
+//  Level 1: Mobij 
+Enemy mobij1("Mobij", 10, 3);
+
+// Level 2: Obobjib summons Mobij first, then fights you himself 
+Enemy mobij2("Mobij", 12, 3);
+Boss obobjib2("Obobjib", 20, 5);
+
+// Level 3: Bombji 
+Enemy bombji3("Bombji", 15, 4);
+
+// Level 4 (one): Mobij and Bombji both return
+Enemy mobij4a("Mobij", 14, 4);
+Enemy bombji4a("Bombji", 16, 5);
+
+//  Level 4 (two): Bobmij turns on you 
+Boss bobmijBoss("Bobmij", 30, 7);
+
+//  Level 5 (one): Jimbob, first appearance 
+Boss jimbob5a("Jimbob", 25, 6);
+
+//  Level 5 (two): "familiar faces" - Bomjib 
+Enemy bomjib5b("Bomjib", 20, 5);
+
+// Level 5 (three): the real final fight 
+Boss jimbobFinal("Jimbob", 45, 9);
+
+const int TOTAL_LEVELS = 9;
+const int MAX_WAVES = 2;
+
+// nullptr >> "no wave here" for levels with fewer than MAX_WAVES fights.
+
+Enemy* levelWaves[TOTAL_LEVELS][MAX_WAVES] = {
+	{ &bobmijTutorial, nullptr },     // level 0
+	{ &mobij1,         nullptr },     // level 1
+	{ &mobij2,         &obobjib2 },   // level 2
+	{ &bombji3,        nullptr },     // level 3
+	{ &mobij4a,        &bombji4a },   // level 4 
+	{ &bobmijBoss,     nullptr },     // level 4 
+	{ &jimbob5a,       nullptr },     // level 5 
+	{ &bomjib5b,       nullptr },     // level 5 
+	{ &jimbobFinal,    nullptr },     // level 5 
+};
+
+Enemy* getWaveEnemy(int level, int wave) {
+	if (level < 0 || level >= TOTAL_LEVELS) return nullptr;
+	if (wave < 0 || wave >= MAX_WAVES) return nullptr;
+	return levelWaves[level][wave];
+}
 
 int main() {
 	srand(static_cast<unsigned int>(time(0)));
@@ -14,131 +69,164 @@ int main() {
 	std::cout << "The Jimbob Paradox" << std::endl;
 	World world;
 	std::cout << "After stealing a sandwich from your roommate, you fall through a portal and arrive in a new world. You're confused, stuck in a new place with no clear way out." << std::endl;
-	std::string name = world.namingUI(); // you could probably replace std::string name here with the name var saved in player class
-	bool isActive = false;
-	std::string plyClass = world.playerClassUI();
-	int hp = 0, attack = 0;
-	if (plyClass != "null") {
-		isActive = true;
-		if (plyClass == "Fairy") {
-			hp = 1000; // mockup values can change later	
-			attack = 5;
-		}
-		else if (plyClass == "Witch") {
-			hp = 25, attack = 10;
-		}
-		else if (plyClass == "Assassin") {
-			hp = 67, attack = 20;
-		}
-	}
 
-	Character player1(name, hp, attack); // just change player1 if you dont like its name
-	// remind me to change this to Player player1 later when player class is added
+	std::string name = world.namingUI();
+
+	// construct with placeholderstats -
+	// playerClassUI() below overwrites hp/maxHp/attack once a class is chosen
+	Character player1(name, 0, 0);
 	Character* playerPtr = &player1;
 
-	std::vector<Enemy> enemies = {
-		Enemy("Bombji", 100, 3),
-		Enemy("Bombji", 15, 10),
-		Enemy("Boss", 25, 5)
-	};
+	world.playerClassUI(&player1);
+	std::string plyClass = world.getPlayerClass();
+	bool isActive = (plyClass != "null");
 
 	bool inCombat = false;
+	bool inShop = false;
 	char keyPressed;
-	Combat* activeCombat = nullptr; // persists for the whole fight n not just one keypress
+	Combat* activeCombat = nullptr; // persists for the whole fight
+	int turnCounter = 0;
+	int currentWave = 0; // which wave within the current level we're on
 
 	// homescreen
 	while (isActive) {
 		system("cls");
-		Enemy& currentEnemy = enemies[world.getCurrentLevel()];
+		Enemy* currentEnemyPtr = getWaveEnemy(world.getCurrentLevel(), currentWave);
+		if (currentEnemyPtr == nullptr) {
+			// s
+			std::cout << "No enemy configured for this level/wave - stopping here." << std::endl;
+			break;
+		}
+		Enemy& currentEnemy = *currentEnemyPtr;
 
 		if (inCombat) {
-			// build the Combat object ONCE per fight, the first time we enter combat
+			// build the Combat object ONCE per figh the first time we enter combat
 			if (activeCombat == nullptr) {
 				activeCombat = new Combat(player1, currentEnemy, plyClass);
+				turnCounter = 0;
 			}
 
-			//print enemy name
-			currentEnemy.printEnemyName();
+			// tick any lingering DoTs at the start of the round
+			activeCombat->tickDotEffects();
 
-			world.printCombatUI(
-				player1.getName(), 
-				player1.getHp(), 
-				player1.getAttack(), 
-				currentEnemy.getHp(), 
-				currentEnemy.getAttack(), 
-				world.getCredits());
+			if (currentEnemy.isAlive() && player1.isAlive()) {
+				world.printCombatUI(player1, currentEnemy);
 
-			keyPressed = _getch();
-			if (keyPressed == 'x')
-			{
-				currentEnemy.takeDamage(player1.getAttack());
-				activeCombat->applyGimmick();
-				activeCombat->tickDotEffects();
+				std::cout << "Turn: " << turnCounter << std::endl;
+				if (activeCombat->getWitchDotTurnsLeft() > 0) {
+					std::cout << currentEnemy.getName() << " cursed: " << activeCombat->getWitchDotTurnsLeft() << " turn(s) left" << std::endl;
+				}
+				if (activeCombat->getEnemyDotTurnsLeft() > 0) {
+					std::cout << "You are afflicted: " << activeCombat->getEnemyDotTurnsLeft() << " turn(s) left" << std::endl;
+				}
+				if (plyClass == "Fairy") {
+					std::cout << "Next Fairy heal in: " << activeCombat->getTurnsUntilFairyHeal() << " turn(s)" << std::endl;
+				}
 
-				currentEnemy.takeDamage(player1.getAttack());
+				char requiredKey = 'A' + rand() % 26;
+				std::cout << "Quick! Press [" << requiredKey << "] to attack!" << std::endl;
 
+				keyPressed = _getch();
 
+				char pressedUpper = keyPressed;
+				if (pressedUpper >= 'a' && pressedUpper <= 'z') {
+					pressedUpper = pressedUpper - 'a' + 'A';
+				}
 
-				//std::cout << "Press [E] to continue." << std::endl;
-				//_getch();
+				if (pressedUpper == requiredKey) {
+					currentEnemy.takeDamage(player1.getAttack());
+					activeCombat->applyGimmick(); // Witch curse / Fairy heal, if applicable
+					turnCounter++;
+					std::cout << "Direct hit!" << std::endl;
+				}
+				else {
+					std::cout << "You fumbled the attack and missed!" << std::endl;
+				}
+
+				std::cout << "Press any key to continue..." << std::endl;
+				_getch();
+
+				if (currentEnemy.isAlive()) {
+					system("cls");
+					activeCombat->doEnemyTurn();
+					std::cout << "Press any key to continue..." << std::endl;
+					_getch();
+				}
 			}
-
-			// enemy attacks back but only if it's still alive
-			if (currentEnemy.isAlive()) activeCombat->doEnemyTurn();
-			std::cout << "Press [E] to continue." << std::endl;
-			_getch();
-
 
 			if (player1.getHp() <= 0) {
 				system("cls");
-				std::cout << "You were defeated..." << std::endl;
+				world.printDeathScreen();
 				isActive = false;
 				delete activeCombat;
 				activeCombat = nullptr;
 			}
 			else if (currentEnemy.getHp() <= 0) {
 				system("cls");
-				std::cout << "You killed an enemy!" << std::endl;
+				std::cout << "You defeated " << currentEnemy.getName() << "!" << std::endl;
 				std::cout << "Press [E] to confirm" << std::endl;
 				keyPressed = _getch();
-				if (keyPressed == 'e') {
-					system("cls");
+				if (keyPressed == 'e' || keyPressed == 'E') {
 					world.earnCredits(currentEnemy.getName());
-					world.printShopUI();
-					std::cout << "Press [E] to confirm" << std::endl;
-					keyPressed = _getch();
-					if (keyPressed == 'e') {
+					delete activeCombat;
+					activeCombat = nullptr;
+
+					Enemy* nextWave = getWaveEnemy(world.getCurrentLevel(), currentWave + 1);
+					if (nextWave != nullptr) {
+						// more enemies in this same level ,, no shop/dialogue yet
+						currentWave++;
 						system("cls");
-						d.printEndDialogue(world.getCurrentLevel(), player1.getName());
-
-						delete activeCombat; // fights over so clean up so the next enemy gets a fresh Combat
-						activeCombat = nullptr;
-
-						int nextLevel = world.changeLevel();
-
-						std::cout << "Press [E] to continue" << std::endl;
-						keyPressed = _getch();
-						if (keyPressed == 'e') {
-							if (nextLevel >= (int)enemies.size()) {
+						std::cout << "Another enemy appears!" << std::endl;
+						std::cout << "Press any key to continue..." << std::endl;
+						_getch();
+						// inCombat stays true ,, next loop picks up nextWave automatically
+					}
+					else {
+						if (!inShop) {
+							while (keyPressed != 'e') {
 								system("cls");
-								std::cout << "You defeated every enemy! You win!" << std::endl;
-								isActive = false;
+								std::cout << "You killed an enemy!" << std::endl;
+								std::cout << "Press [E] to continue" << std::endl;
+								keyPressed = _getch();
 							}
-							else {
-								inCombat = false;
+							inShop = true;
+							world.earnCredits(currentEnemy.getName());
+							bool a = false;
+							while (inShop) {
+								while (!a) {
+									system("cls");
+									world.printShopUI(playerPtr);
+									std::cout << "Press [E] to confirm / any other key to return." << std::endl;
+									keyPressed = _getch();
+									a = (keyPressed == 'e');
+								}
+								if (keyPressed == 'e') {
+									keyPressed = d.printEndDialogue(world.getCurrentLevel(), player1.getName());
+									while (keyPressed != 'e') keyPressed = d.printEndDialogue(world.getCurrentLevel(), player1.getName());
+									inShop = false;
+									inCombat = false;
+									world.changeLevel();
+								}
 							}
 						}
 					}
 				}
 			}
 		}
-		else {
-			d.printDialogue(world.getCurrentLevel(), playerPtr->getName());
-			std::cout << "Press any key to continue..." << std::endl;
-			keyPressed = _getch();
-			inCombat = true;
+		if (inCombat == false) {
+			if (world.getCurrentLevel() <= 8) {
+				keyPressed = d.printDialogue(world.getCurrentLevel(), player1.getName());
+				if (keyPressed == 'e') inCombat = true;
+				else if (keyPressed == '8') world.cheatCode(playerPtr);
+			}
+			else {
+				world.printWinScreen();
+				isActive = false;
+			}
 		}
 	};
+
+	delete activeCombat; // safety net in case the loop exits mid-fight
 
 	return 0;
 }
