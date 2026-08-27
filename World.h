@@ -1,24 +1,42 @@
 #include <string>
+#include "Character.h"
+#include "Enemy.h"
 
 #pragma once
 class World
 {
 private:
-	// char grid[10][10];
 	int currentLevel;
 	int credits;
 	int creditsRewarded;
+	std::string playerClass;
 
 public:
 	World();
 	int getCredits(); // accessor to credits value, not the earning one
 	int getCurrentLevel();
-	int changeLevel(); // level increment
+	void changeLevel(); // level increment
 	std::string namingUI();
-	std::string playerClassUI();
-
+	void playerClassUI(Character* player);
+	std::string getPlayerClass(); // Fairy/Witch/Assassin, set after playerClassUI() runs
 	void earnCredits(std::string enemyType);
-	void printCombatUI(std::string playerName, int pHp, int pAtk, int eHp, int eAtk, int creds);
+	void printHP(Character& c);
+	void printStats(Character& c);
+	void printCombatUI(Character& p, Enemy& e);
 	void shopASCIIprint();
-	void printShopUI();
+	void printShopUI(Character* player);
+	void printWinScreen();
+	void printDeathScreen();
+
+	void BombjiName();
+	void BomjibName();
+	void MobijName();
+
+	void ObobjibName();
+	void BobmijName();
+	void JimbobName();
+
+	void printEnemyName(Enemy& e);
+
+	void cheatCode(Character* player);
 };
