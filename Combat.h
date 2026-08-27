@@ -8,6 +8,7 @@ public:
     void tickDotEffects();
     void doEnemyTurn();
     void explodeASCII();
+    void printExplodeASCII();
 
     int getWitchDotTurnsLeft() const;
     int getEnemyDotTurnsLeft() const;
