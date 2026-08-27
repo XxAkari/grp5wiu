@@ -1,28 +1,31 @@
 #pragma once
-#include "Character.h"
 #include <string>
-class Combat {
-public:
-    Combat(Character& player, Character& enemy, std::string pClassName = "");
-    void applyGimmick();
-    void tickDotEffects();
-    void doEnemyTurn();
-    void explodeASCII();
-    void printExplodeASCII();
 
-    int getWitchDotTurnsLeft() const;
-    int getEnemyDotTurnsLeft() const;
-    int getTurnsUntilFairyHeal() const;
+class Character {
+public:
+	Character();
+
+	Character(std::string name, int hp, int attack);
+	Character(std::string name, int hp, int maxHp, int attack); // lets a subclass (Enemy) set starting hp and max hp separately
+
+	bool isAlive();
+	void takeDamage(int amount);
+	int getAttack();
+	std::string getName();
+	int getHp();
+	int getMaxHp();
+
+	void setAttack(int atk);
+	void setHealth(int health);
+	void setMaxHP(int maxHP);
+
+	void addHp(int hp);
+	void addMaxHP(int hp);
+	void addAttack(int atk);
+
 private:
-    Character& player;
-    Character& enemy;
-    std::string pClassName;
-    bool isExplodeEnemy;
-    bool isDotEnemy;
-    int witchDotTurnsLeft;
-    int enemyDotTurnsLeft;
-    int explosionCooldown;
-    int fairyTurnCounter;
-    int getEnemyAttackDamage();
-    void healCharacter(Character& target, int amount);
+	std::string name;
+	int hp;
+	int maxHp;
+	int atk;
 };
