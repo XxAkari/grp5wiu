@@ -127,7 +127,7 @@ int main() {
 				}
 
 				char requiredKey = 'A' + rand() % 26;
-				std::cout << "Quick! Press [" << requiredKey << "] to attack!" << std::endl;
+				std::cout << "Quick! Press \033[31m[" << requiredKey << "]\033[0m to attack!" << std::endl;
 
 				keyPressed = _getch();
 
@@ -167,7 +167,7 @@ int main() {
 			else if (currentEnemy.getHp() <= 0) {
 				system("cls");
 				std::cout << "You defeated " << currentEnemy.getName() << "!" << std::endl;
-				std::cout << "Press [E] to confirm" << std::endl;
+				std::cout << "Press \033[36m[E]\033[0m to confirm" << std::endl;
 				keyPressed = _getch();
 				if (keyPressed == 'e' || keyPressed == 'E') {
 					world.earnCredits(currentEnemy.getName());
@@ -189,7 +189,7 @@ int main() {
 							while (keyPressed != 'e') {
 								system("cls");
 								std::cout << "You killed an enemy!" << std::endl;
-								std::cout << "Press [E] to continue" << std::endl;
+								std::cout << "Press \033[36m[E]\033[0m to continue" << std::endl;
 								keyPressed = _getch();
 							}
 							inShop = true;
@@ -199,7 +199,7 @@ int main() {
 								while (!a) {
 									system("cls");
 									world.printShopUI(playerPtr);
-									std::cout << "Press [E] to confirm / any other key to return." << std::endl;
+									std::cout << "Press \033[36m[E]\033[0m to confirm / any other key to return." << std::endl;
 									keyPressed = _getch();
 									a = (keyPressed == 'e');
 								}

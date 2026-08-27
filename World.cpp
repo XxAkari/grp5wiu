@@ -32,7 +32,7 @@ std::string World::namingUI() {
 
 void World::playerClassUI(Character* player) {
 	std::string cardname[3] = { "Fairy", "Witch", "Assassin" };
-	std::string carddesc[3] = { "placeholder 1", "placeholder 2", "placeholder 3" };
+	std::string carddesc[3] = { "Heals 20 hp every 3 turns", "Deals DoT for 3 turns, 3 dmg each", "Has a 25% chance to dodge" };
 	int cardatk[3] = { 5, 7, 12 };
 	int cardhp[3] = { 100, 67, 45 };
 	bool chosen = false;
@@ -55,7 +55,7 @@ void World::playerClassUI(Character* player) {
 		}
 		system("cls");
 		std::cout << "The Jimbob Paradox" << std::endl;
-		std::cout << "[ Class Selection ]" << std::endl;
+		std::cout << "\033[33m[ Class Selection ]\033[0m" << std::endl;
 		std::cout << "Class: " << cardname[cardCount] << std::endl;
 		std::cout << "Desc: " << carddesc[cardCount] << std::endl;
 		std::cout << "Attack: " << cardatk[cardCount] << std::endl;
@@ -92,7 +92,7 @@ std::string World::getPlayerClass() {
 }
 
 void printHp(Character& c) {
-	std::cout << "HP [";
+	std::cout << "\033[92mHP\033[0m [";
 	int i = 0;
 	for (; i < int((c.getHp() / float(c.getMaxHp())) * 10); i++) {
 		std::cout << (char)254u;
@@ -111,13 +111,13 @@ void World::printStats(Character& c) {
 	std::cout << std::endl;
 	std::cout << '[' << c.getName() << ']' << std::endl;
 	printHp(c);
-	std::cout << "Attack: " << c.getAttack() << std::endl;
+	std::cout << "\033[91mAttack\033[0m: " << c.getAttack() << std::endl;
 	std::cout << std::endl;
 }
 
 void World::printCombatUI(Character& p, Enemy& e) {
 	std::cout << "The Jimbob Paradox" << std::endl;
-	std::cout << "Credits: " << credits << std::endl;
+	std::cout << "\033[093mCredits\033[0m: " << credits << std::endl;
 	printStats(p);
 	std::cout << "===============================" << std::endl;
 	printStats(e);
@@ -163,7 +163,7 @@ void World::printShopUI(Character* player) {
 	while (proceed == false) {
 		system("cls");
 		std::cout << "The Jimbob Paradox" << std::endl;
-		std::cout << "Credits: " << credits << std::endl;
+		std::cout << "\033[93mCredits\033[0m: " << credits << std::endl;
 		shopASCIIprint();
 		std::cout << "\033[33m[ Items In Stock ]\033[0m" << std::endl;
 		std::cout << "Item: " << item[itemCount] << std::endl;
@@ -172,7 +172,7 @@ void World::printShopUI(Character* player) {
 		std::cout << std::endl;
 		std::cout << "\033[94m[Z]\033[0m View Previous / \033[94m[X]\033[0m View Next / \033[32m[E]\033[0m Skip Shop" << std::endl;;
 		for (int i = 0; i < 3; i++) {
-			std::cout << " [" << i + 1 << "] Buy " << item[i];
+			std::cout << " \033[95m[" << i + 1 << "]\033[0m Buy " << item[i];
 		}
 		std::cout << std::endl;
 		if (!affordable) std::cout << "Not enough credits!" << std::endl;
@@ -335,8 +335,8 @@ ________________________________________________________________
 ||                    '--<|     ||>--'                         ||
 ||                        |     ||                             ||
 ||                        '-----'`   ___----                   ||
-||	                       |___ ----                           ||
-||                            \____                            ||
+||                         |___ ----                           ||
+||                          \____                              ||
 ||                                 ----___                     ||
 ||                                        ---                  ||
 '===============================================================')" << std::endl;

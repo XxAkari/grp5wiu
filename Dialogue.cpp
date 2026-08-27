@@ -35,7 +35,7 @@ char Dialogue::printDialogue(int level, std::string name) {
 		system("cls");
 		printUI();
 		(this->*dialogue[level])(name);
-		std::cout << "Press [E] to continue..." << std::endl;
+		std::cout << "Press \033[36m[E]\033[0m to continue..." << std::endl;
 		char keyPressed = _getch();
 		return keyPressed;
 	}
@@ -45,7 +45,7 @@ char Dialogue::printEndDialogue(int level, std::string name) {
 		system("cls");
 		printUI();
 		(this->*endDialogue[level])(name);
-		std::cout << "Press [E] to continue" << std::endl;
+		std::cout << "Press \033[36m[E]\033[0m to continue" << std::endl;
 		char keyPressed = _getch();
 		return keyPressed;
 	}

@@ -59,16 +59,10 @@ Combat::Combat(Character& player, Character& enemy, std::string pClassName)
 	isDotEnemy = (name == "Bomjib" || name == "Jimbob");
 
 	if (isExplodeEnemy) {
-		// Bombjis atk isn't what it actually hits for
-		// Boss Bobmij doesnt have a separate number yet,
-		// so it just uses its own ATK stat until thats filled in.
-		//filled in but needs testing meowwww
-
 		if (enemy.getName() == "Bombji")
 			explosionCooldown = BOMBJI_EXPLOSION_COOLDOWN;
 		else if (enemy.getName() == "Bobmij")
 			explosionCooldown = BOSS_EXPLOSION_COOLDOWN;
-
 	}
 }	
 
@@ -150,18 +144,13 @@ void Combat::doEnemyTurn() {
 	{
 		if (explosionCooldown == 0)
 		{
-
 			// Reset cooldown
 			if (enemy.getName() == "Bombji")
 				explosionCooldown = BOMBJI_EXPLOSION_COOLDOWN;
-
 			else if (enemy.getName() == "Bobmij")
 				explosionCooldown = BOSS_EXPLOSION_COOLDOWN;
 		}
-		else
-		{
-			explosionCooldown--;
-		}
+		else{explosionCooldown--;}
 	}
 
 
