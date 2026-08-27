@@ -85,9 +85,6 @@ int Combat::getEnemyAttackDamage() {
 	return damage;
 };
 
-
-
-
 void Combat::healCharacter(Character& target, int amount) {
 	// Character has no heal so reuse takeDamage() with a negative amount
 	int missing = target.getMaxHp() - target.getHp();
@@ -96,7 +93,6 @@ void Combat::healCharacter(Character& target, int amount) {
 		target.takeDamage(-healAmount);
 	}
 }
-
 
 // Called from Source.cpp right after the player's attack damage has already
 
@@ -152,7 +148,6 @@ void Combat::doEnemyTurn() {
 		}
 		else{explosionCooldown--;}
 	}
-
 
 	int dmg = getEnemyAttackDamage();
 	player.takeDamage(dmg);
