@@ -11,7 +11,7 @@
 // grouped by level ,, since some levels now have more than one wave.
 
 // Level 0: tutorial fight against Bobmij 
-Boss bobmijTutorial("Bombji", 30, 2);
+Boss bobmijTutorial("Bombji", 30, 2); //
 
 //  Level 1: Mobij 
 Enemy mobij1("Mobij", 10, 3);
@@ -21,20 +21,23 @@ Enemy mobij2("Mobij", 12, 3);
 Boss obobjib2("Obobjib", 20, 5);
 
 // Level 3: Bombji 
-Enemy bombji3("Bombji", 15, 4);
+Enemy bombji3("Bombji", 15, 4); 
+Enemy mobij3("Mobij", 12, 3);
 
 // Level 4 (one): Mobij and Bombji both return
 Enemy mobij4a("Mobij", 14, 4);
 Enemy bombji4a("Bombji", 16, 5);
 
 //  Level 4 (two): Bobmij turns on you 
-Boss bobmijBoss("Bobmij", 30, 7);
+Boss bobmijBoss("Bobmij", 30, 7); 
 
 //  Level 5 (one): Jimbob, first appearance 
-Boss jimbob5a("Jimbob", 25, 6);
+Enemy bombji5a("Bombji", 20, 5);
+Enemy mobij5a("Mobij", 14, 4);
 
 //  Level 5 (two): "familiar faces" - Bomjib 
-Enemy bomjib5b("Bomjib", 20, 5);
+Enemy bomjib5b("Bomjib", 20, 5);	
+Enemy mobij5b("Mobij", 14, 4);
 
 // Level 5 (three): the real final fight 
 Boss jimbobFinal("Jimbob", 45, 9);
@@ -48,11 +51,11 @@ Enemy* levelWaves[TOTAL_LEVELS][MAX_WAVES] = {
 	{ &bobmijTutorial, nullptr },     // level 0
 	{ &mobij1,         nullptr },     // level 1
 	{ &mobij2,         &obobjib2 },   // level 2
-	{ &bombji3,        nullptr },     // level 3
+	{ &bombji3,        &mobij3 },     // level 3
 	{ &mobij4a,        &bombji4a },   // level 4 
 	{ &bobmijBoss,     nullptr },     // level 4 
-	{ &jimbob5a,       nullptr },     // level 5 
-	{ &bomjib5b,       nullptr },     // level 5 
+	{ &bombji5a,       &mobij5a },     // level 5 
+	{ &bomjib5b,       &mobij5b },     // level 5 
 	{ &jimbobFinal,    nullptr },     // level 5 
 };
 
@@ -190,9 +193,9 @@ int main() {
 								keyPressed = _getch();
 							}
 							inShop = true;
-							world.earnCredits(currentEnemy.getName());
 							bool a = false;
 							while (inShop) {
+								
 								while (!a) {
 									system("cls");
 									world.printShopUI(playerPtr);
@@ -205,6 +208,9 @@ int main() {
 									while (keyPressed != 'e') keyPressed = d.printEndDialogue(world.getCurrentLevel(), player1.getName());
 									inShop = false;
 									inCombat = false;
+
+									currentWave = 0; //reset to first wave of level
+
 									world.changeLevel();
 								}
 							}
