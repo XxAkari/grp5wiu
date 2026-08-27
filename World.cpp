@@ -155,7 +155,7 @@ void World::shopASCIIprint() {
 
 void World::printShopUI(Character* player) {
 	std::string item[3] = { "Vitality", "Damage", "Shield" };
-	std::string desc[3] = { "Increases max health by 20.","Increases damage by 3.","Decreases damage taken by 5." };
+	std::string desc[3] = { "Increases health by 20.","Increases damage by 3.","Decreases damage taken by 5." };
 	int itemCount = 0;
 	bool proceed = false;
 	bool affordable = true;
@@ -193,11 +193,14 @@ void World::printShopUI(Character* player) {
 			break;
 		case '1':
 			if (credits >= 10) {
+				
 				std::cout << "You bought " << item[0] << std::endl;
 				credits -= 10;
 				std::cout << "Press any key to continue" << std::endl;
 				keypressed = _getch();
-				player->addMaxHP(20);
+				
+				player->addHp(20);
+
 			}
 			else affordable = false;
 			break;
