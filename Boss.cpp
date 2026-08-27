@@ -1,18 +1,56 @@
 #include "Boss.h"
+#include <iostream>
 
-//Constuctor
+Boss::Boss(std::string name, int hp, int attack)
+	: Enemy(name, hp, attack) {
+}
 
-//Destructor
-	
-//Getter
-	
+Boss::~Boss() {
+}
 
-//Setter
-	void Boss::setHP(int newHP)
-	{
+int Boss::getHP() {
+	return getHp(); // reuses Character's existing getHp()
+}
 
-	}
-	void Boss::setATK(int newATK)
-	{
+int Boss::getATK() {
+	return getAttack(); // reuses Character's existing getAttack()
+}
 
-	}
+void Boss::setHP(int newHP) {
+	int diff = newHP - getHp();
+	takeDamage(-diff);
+}
+
+void Boss::setATK(int newATK) {
+}
+
+void Boss::ObobjibName() {
+	std::cout << R"(
+.||||. ||||. .||||. ||||.    ||| ||||| ||||. 
+|    | |   | |    | |   |     |    |   |   |
+|    | |   | |    | |   |     |    |   |   |
+|    | ||||. |    | ||||.     |    |   ||||.
+|    | |   | |    | |   | \   |    |   |   |
+|    | |   | |    | |   |  \  |    |   |   |
+.||||. ||||. .||||. ||||.   \\/  ||||| ||||.)" << std::endl;
+};
+void Boss::BobmijName() {
+	std::cout << R"(
+||||. .||||. ||||. |\    /| |||||    |||
+|   | |    | |   | | \  / |   |       |
+|   | |    | |   | |  \/  |   |       |
+||||. |    | ||||. |      |   |       |
+|   | |    | |   | |      |   |   \   |
+|   | |    | |   | |      |   |    \  |
+||||. .||||. ||||. |      | |||||   \\/)" << std::endl;
+};
+void Boss::JimbobName() {
+	std::cout << R"(
+   ||| ||||| |\    /| ||||. .||||. ||||. 
+    |    |   | \  / | |   | |    | |   |
+    |    |   |  \/  | |   | |    | |   |
+    |    |   |      | ||||. |    | ||||.
+\   |    |   |      | |   | |    | |   |
+ \  |    |   |      | |   | |    | |   |
+  \\/  ||||| |      | ||||. .||||. ||||.)" << std::endl;
+};
