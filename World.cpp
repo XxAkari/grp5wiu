@@ -1,17 +1,15 @@
 #include "World.h"
 #include "Dialogue.h"
+#include "Character.h"
 #include "Enemy.h"
 #include <iostream>	
 #include <conio.h>
 
 World::World() {
-	/*	for (int i = 0; i < 10; i++) {
-			for (int j = 0; j < 10; j++) {
-				grid[i][j] = '.';
-			}
-		} */
+	creditsRewarded = 0;
 	currentLevel = 0;
 	credits = 0;
+	playerClass = "null";
 };
 
 int World::getCredits() {
@@ -32,7 +30,7 @@ std::string World::namingUI() {
 }
 
 
-std::string World::playerClassUI() {
+void World::playerClassUI(Character* player) {
 	std::string cardname[3] = { "Fairy", "Witch", "Assassin" };
 	std::string carddesc[3] = { "placeholder 1", "placeholder 2", "placeholder 3" };
 	int cardatk[3] = { 5, 10, 20 };
@@ -79,43 +77,65 @@ std::string World::playerClassUI() {
 	default:
 		std::cout << "Invalid Class!" << std::endl;
 	}
-	std::cout << "You chose " << chosenClass << "!" << std::endl;
-	std::cout << "Press any key to continue..." << std::endl;
-	return chosenClass;
+	if (chosenClass != "null") {
+		player->setHealth(cardhp[cardCount]);
+		player->setMaxHP(cardhp[cardCount]);
+		player->setAttack(cardatk[cardCount]);
+		playerClass = chosenClass; // remembered here since Character has no "class" field - Combat needs this for gimmicks
+		std::cout << "You chose " << chosenClass << "!" << std::endl;
+		std::cout << "Press any key to continue..." << std::endl;
+	}
 }
 
-void World::printCombatUI(std::string playerName, int pHp, int pAtk, int eHp, int eAtk, int creds) {
+std::string World::getPlayerClass() {
+	return playerClass;
+}
+
+void printHp(Character& c) {
+	std::cout << "HP [";
+	int i = 0;
+	for (; i < int((c.getHp() / float(c.getMaxHp())) * 10); i++) {
+		std::cout << (char)254u;
+	}
+	for (int j = 0; j < 10 - i; j++) {
+		std::cout << ' ';
+	}
+	std::cout << "] " << c.getHp() << '/' << c.getMaxHp() << std::endl;
+}
+
+void World::printHP(Character& c) {
+	printHp(c); // same bar-drawing logic, just exposed as a member per the header
+}
+
+void World::printStats(Character& c) {
+	std::cout << std::endl;
+	std::cout << '[' << c.getName() << ']' << std::endl;
+	printHp(c);
+	std::cout << "Attack: " << c.getAttack() << std::endl;
+	std::cout << std::endl;
+}
+
+void World::printCombatUI(Character& p, Enemy& e) {
 	std::cout << "The Jimbob Paradox" << std::endl;
-	std::cout << "Credits: " << creds << std::endl;
-	std::cout << playerName << " Health: " << pHp << std::endl;
-	std::cout << "Attack: " << pAtk << std::endl;
+	std::cout << "Credits: " << credits << std::endl;
+	printStats(p);
+	std::cout << "===============================" << std::endl;
+	printStats(e);
+	printEnemyName(e);
 	std::cout << std::endl;
-	std::cout << "Enemy Health: " << eHp << std::endl;
-	std::cout << "Attack: " << eAtk << std::endl;
 	std::cout << std::endl;
-	std::cout << "Press [X] to attack the enemy" << std::endl;
-
-	
-
-	/*grid[6][7] = 'x'; // dw about this im just test running
-	for (int i = 0; i < 10; i++) {
-		for (int j = 0; j < 10; j++) {
-			std::cout << grid[i][j] << ' ';
-		}
-		std::cout << std::endl;
-	}*/
-
 }
 
 void World::earnCredits(std::string enemyType) {
-	if (enemyType == "Enemy") creditsRewarded = rand() % 7 + 5;
-	else if (enemyType == "Boss") creditsRewarded = rand() % 5 + 10;
+	bool isEnemy = (enemyType == "Bombji") || (enemyType == "Bomjib") || (enemyType == "Mobij");
+	bool isBoss = (enemyType == "Obobjib") || (enemyType == "Bobmij") || (enemyType == "Jimbob");
+	if (isEnemy) creditsRewarded = rand() % 7 + 5;
+	else if (isBoss) creditsRewarded = rand() % 5 + 10;
 	credits += creditsRewarded;
 }
 
-int World::changeLevel() {
+void World::changeLevel() {
 	currentLevel++;
-	return currentLevel;
 }
 
 void World::shopASCIIprint() {
@@ -133,7 +153,7 @@ void World::shopASCIIprint() {
 	)" << std::endl;
 }
 
-void World::printShopUI() {
+void World::printShopUI(Character* player) {
 	std::string item[3] = { "Vitality", "Damage", "Shield" };
 	std::string desc[3] = { "Increases max health by 20.","Increases damage by 3.","Decreases damage taken by 5." };
 	int itemCount = 0;
@@ -177,7 +197,7 @@ void World::printShopUI() {
 				credits -= 10;
 				std::cout << "Press any key to continue" << std::endl;
 				keypressed = _getch();
-				// player hp goes up
+				player->addMaxHP(20);
 			}
 			else affordable = false;
 			break;
@@ -187,7 +207,7 @@ void World::printShopUI() {
 				credits -= 10;
 				std::cout << "Press any key to continue" << std::endl;
 				keypressed = _getch();
-				// player damage goes up
+				player->addAttack(3);
 			}
 			else affordable = false;
 			break;
@@ -201,6 +221,165 @@ void World::printShopUI() {
 			}
 			else affordable = false;
 			break;
+		}
+	}
+}
+
+
+void World::BombjiName() {
+	std::cout << R"(
+||||. .||||. |\    /| ||||.   ||| |||||
+|   | |    | | \  / | |   |     |   |  
+|   | |    | |  \/  | |   |     |   |  
+||||. |    | |      | ||||.     |   |  
+|   | |    | |      | |   | \   |   |  
+|   | |    | |      | |   |  \  |   |  
+||||. .||||. |      | ||||.   \\/ |||||)" << std::endl;
+};
+
+void World::BomjibName() {
+	std::cout << R"(
+||||. .||||. |\    /|    ||| ||||| ||||. 
+|   | |    | | \  / |     |   |    |   |
+|   | |    | |  \/  |     |   |    |   |
+||||. |    | |      |     |   |    ||||.
+|   | |    | |      | \   |   |    |   |
+|   | |    | |      |  \  |   |    |   |
+||||. .||||. |      |   \\/  ||||| ||||.)" << std::endl;
+};
+
+void World::MobijName() {
+	std::cout << R"(
+|\    /| .||||. ||||.  |||||    |||
+| \  / | |    | |   |    |       |
+|  \/  | |    | |   |    |       |
+|      | |    | ||||.    |       |
+|      | |    | |   |    |   \   |
+|      | |    | |   |    |    \  |
+|      | .||||. ||||.  |||||   \\/)" << std::endl;
+};
+
+void World::ObobjibName() {
+	std::cout << R"(
+.||||. ||||. .||||. ||||.    ||| ||||| ||||. 
+|    | |   | |    | |   |     |    |   |   |
+|    | |   | |    | |   |     |    |   |   |
+|    | ||||. |    | ||||.     |    |   ||||.
+|    | |   | |    | |   | \   |    |   |   |
+|    | |   | |    | |   |  \  |    |   |   |
+.||||. ||||. .||||. ||||.   \\/  ||||| ||||.)" << std::endl;
+};
+
+void World::BobmijName() {
+	std::cout << R"(
+||||. .||||. ||||. |\    /| |||||    |||
+|   | |    | |   | | \  / |   |       |
+|   | |    | |   | |  \/  |   |       |
+||||. |    | ||||. |      |   |       |
+|   | |    | |   | |      |   |   \   |
+|   | |    | |   | |      |   |    \  |
+||||. .||||. ||||. |      | |||||   \\/)" << std::endl;
+};
+
+void World::JimbobName() {
+	std::cout << R"(
+   ||| ||||| |\    /| ||||. .||||. ||||. 
+    |    |   | \  / | |   | |    | |   |
+    |    |   |  \/  | |   | |    | |   |
+    |    |   |      | ||||. |    | ||||.
+\   |    |   |      | |   | |    | |   |
+ \  |    |   |      | |   | |    | |   |
+  \\/  ||||| |      | ||||. .||||. ||||.)" << std::endl;
+};
+
+void World::printEnemyName(Enemy& e) {
+	if (e.getName() == "Bombji") BombjiName();
+	else if (e.getName() == "Bomjib") BomjibName();
+	else if (e.getName() == "Mobij") MobijName();
+	else if (e.getName() == "Obobjib") ObobjibName();
+	else if (e.getName() == "Bobmij") BobmijName();
+	else if (e.getName() == "Jimbob") JimbobName();
+}
+
+
+
+void World::printWinScreen() {
+	system("cls");
+	// final winscreen here
+	std::cout << "You win!" << std::endl;
+	std::cout << "Press any key to quit" << std::endl;
+	int e = _getch();
+}
+
+void World::printDeathScreen() {
+	std::cout << "You died..." << std::endl;
+}
+
+void World::cheatCode(Character* player) {
+	system("cls");
+	std::cout << "Cheat code enabled!" << std::endl;
+	std::cout << "Type 8 to reset input." << std::endl;
+	bool cheat = true;
+	char keyp = '\0';
+	std::string cheatcode = "";
+	while (cheat) {
+		keyp = _getch();
+		std::cout << keyp;
+		if (cheatcode.length() > 8) {
+			std::cout << std::endl;
+			std::cout << "Warning: Too many characters inputted. Type [clear] to clear input: ";
+			std::string resp;
+			std::cin >> resp;
+			if (resp == "clear") cheatcode.clear(), std::cout << "Input has been cleared." << std::endl;
+		}
+		else {
+			cheatcode += keyp;
+			if (cheatcode == "kms") {
+				std::cout << std::endl;
+				player->setHealth(0);
+				std::cout << "Player health is now 0." << std::endl;
+				cheatcode.clear();
+			}
+			else if (cheatcode == "skip") {
+				std::cout << std::endl;
+				std::cout << "Choose the level you want to skip to (0-9) and press [Enter] to confirm: ";
+				int lvl;
+				std::cin >> lvl;
+				if (lvl <= 9 && lvl >= 0) {
+					currentLevel = lvl;
+					std::cout << "Current Level: " << currentLevel << std::endl;
+				}
+				else std::cout << "Invalid output!" << std::endl;
+				cheatcode.clear();
+			}
+			else if (cheatcode == "rich") {
+				std::cout << std::endl;
+				credits += 9999;
+				std::cout << "Credits: " << credits << std::endl;
+				cheatcode.clear();
+			}
+			else if (cheatcode == "sethp") {
+				std::cout << std::endl;
+				int h;
+				std::cout << "Set Health: ";
+				std::cin >> h;
+				player->setHealth(h);
+				std::cout << "Health set to " << h << std::endl;
+				cheatcode.clear();
+			}
+			else if (cheatcode == "clear") {
+				std::cout << std::endl;
+				std::cout << "Input cleared!" << std::endl;
+				cheatcode.clear();
+			}
+			else if (cheatcode == "quit") {
+				std::cout << std::endl;
+				std::cout << "Cheatcode has been disabled." << std::endl;
+				std::cout << "Press [E] to return." << std::endl;
+				char x = _getch();
+				if (x == 'e') cheat = false;
+				cheatcode.clear();
+			}
 		}
 	}
 }
