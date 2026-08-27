@@ -11,7 +11,7 @@
 // grouped by level ,, since some levels now have more than one wave.
 
 // Level 0: tutorial fight against Bobmij 
-Boss bobmijTutorial("Bobmij", 8, 2);
+Boss bobmijTutorial("Bombji", 30, 2);
 
 //  Level 1: Mobij 
 Enemy mobij1("Mobij", 10, 3);
@@ -39,8 +39,8 @@ Enemy bomjib5b("Bomjib", 20, 5);
 // Level 5 (three): the real final fight 
 Boss jimbobFinal("Jimbob", 45, 9);
 
-const int TOTAL_LEVELS = 9; 
-const int MAX_WAVES = 2;   
+const int TOTAL_LEVELS = 9;
+const int MAX_WAVES = 2;
 
 // nullptr >> "no wave here" for levels with fewer than MAX_WAVES fights.
 
@@ -82,6 +82,7 @@ int main() {
 	bool isActive = (plyClass != "null");
 
 	bool inCombat = false;
+	bool inShop = false;
 	char keyPressed;
 	Combat* activeCombat = nullptr; // persists for the whole fight
 	int turnCounter = 0;
@@ -181,38 +182,47 @@ int main() {
 						// inCombat stays true ,, next loop picks up nextWave automatically
 					}
 					else {
-						// last wave of this level 
-						system("cls");
-						world.printShopUI(&player1);
-						d.printEndDialogue(world.getCurrentLevel(), player1.getName());
-
-						std::cout << "Press [E] to continue" << std::endl;
-						keyPressed = _getch();
-						if (keyPressed == 'e' || keyPressed == 'E') {
-							world.changeLevel();
-							currentWave = 0;
-							if (world.getCurrentLevel() >= TOTAL_LEVELS) {
+						if (!inShop) {
+							while (keyPressed != 'e') {
 								system("cls");
-								world.printWinScreen();
-								isActive = false;
+								std::cout << "You killed an enemy!" << std::endl;
+								std::cout << "Press [E] to continue" << std::endl;
+								keyPressed = _getch();
 							}
-							else {
-								inCombat = false;
+							inShop = true;
+							world.earnCredits(currentEnemy.getName());
+							bool a = false;
+							while (inShop) {
+								while (!a) {
+									system("cls");
+									world.printShopUI(playerPtr);
+									std::cout << "Press [E] to confirm / any other key to return." << std::endl;
+									keyPressed = _getch();
+									a = (keyPressed == 'e');
+								}
+								if (keyPressed == 'e') {
+									keyPressed = d.printEndDialogue(world.getCurrentLevel(), player1.getName());
+									while (keyPressed != 'e') keyPressed = d.printEndDialogue(world.getCurrentLevel(), player1.getName());
+									inShop = false;
+									inCombat = false;
+									world.changeLevel();
+								}
 							}
 						}
 					}
 				}
 			}
 		}
-		else {
-			d.printDialogue(world.getCurrentLevel(), playerPtr->getName());
-			std::cout << "Press any key to continue... " << std::endl;
-			keyPressed = _getch();
-			if (keyPressed == '8') {
-				world.cheatCode(&player1);
-				currentWave = 0;
+		if (inCombat == false) {
+			if (world.getCurrentLevel() <= 8) {
+				keyPressed = d.printDialogue(world.getCurrentLevel(), player1.getName());
+				if (keyPressed == 'e') inCombat = true;
+				else if (keyPressed == '8') world.cheatCode(playerPtr);
 			}
-			inCombat = true;
+			else {
+				world.printWinScreen();
+				isActive = false;
+			}
 		}
 	};
 
